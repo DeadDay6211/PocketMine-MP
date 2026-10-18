@@ -83,6 +83,9 @@ class PrimedTNT extends Entity implements Explosive{
 		parent::initEntity($nbt);
 
 		$this->fuse = $nbt->getShort(self::TAG_FUSE, 80);
+
+		$this->setNameTagVisible(true);
+		$this->setNameTagAlwaysVisible(true);
 	}
 
 	public function canCollideWith(Entity $entity) : bool{
@@ -110,6 +113,18 @@ class PrimedTNT extends Entity implements Explosive{
 			if($this->fuse <= 0){
 				$this->flagForDespawn();
 				$this->explode();
+			}else{
+				$seconds = number_format($this->fuse / 20, 2);
+
+				if($this->fuse > 40){
+					$color = "§a";
+				}elseif($this->fuse > 20){
+					$color = "§e";
+				}else{
+					$color = "§c";
+				}
+
+				$this->setNameTag($color . $seconds);
 			}
 		}
 
@@ -120,7 +135,6 @@ class PrimedTNT extends Entity implements Explosive{
 		$ev = new EntityPreExplodeEvent($this, 4);
 		$ev->call();
 		if(!$ev->isCancelled()){
-			//TODO: deal with underwater TNT (underwater TNT treats water as if it has a blast resistance of 0)
 			$explosion = new Explosion(Position::fromObject($this->location->add(0, $this->size->getHeight() / 2, 0), $this->getWorld()), $ev->getRadius(), $this, $ev->getFireChance());
 			if($ev->isBlockBreaking()){
 				$explosion->explodeA();
