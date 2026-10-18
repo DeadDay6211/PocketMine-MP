@@ -57,6 +57,8 @@ final class GeneratorManager{
 		$this->addGenerator(Nether::class, "nether", fn() => null);
 		$this->addAlias("nether", "hell");
 		$this->addGenerator(VoidGenerator::class, "void", fn() => null, fast: true, spawnPositionProvider: fn(int $seed) => new Vector3(0, -63, 0));
+		$this->addAlias("void", "empty");
+		$this->addAlias("void", "bedwars");
 	}
 
 	/**
