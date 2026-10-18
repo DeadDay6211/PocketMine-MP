@@ -511,7 +511,7 @@ class Item implements \JsonSerializable{
 		return morton2d_encode($this->identifier->getTypeId(), $this->computeStateData());
 	}
 
-	private function computeStateData() : int{
+	public function computeStateData() : int{
 		$writer = new RuntimeDataWriter(16); //TODO: max bits should be a constant instead of being hardcoded all over the place
 		$this->describeState($writer);
 		return $writer->getValue();
