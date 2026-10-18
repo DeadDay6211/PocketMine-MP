@@ -48,7 +48,7 @@ class Chunk{
 
 	private int $terrainDirtyFlags = self::DIRTY_FLAGS_ALL;
 
-	protected ?bool $lightPopulated = false;
+	protected ?bool $lightPopulated = true;
 	protected bool $terrainPopulated = false;
 
 	/**

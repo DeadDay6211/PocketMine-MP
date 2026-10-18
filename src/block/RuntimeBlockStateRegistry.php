@@ -27,7 +27,6 @@ use pocketmine\block\BlockBreakInfo as BreakInfo;
 use pocketmine\block\BlockIdentifier as BID;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\SingletonTrait;
-use pocketmine\world\light\LightUpdate;
 use function count;
 use function min;
 
@@ -185,7 +184,7 @@ class RuntimeBlockStateRegistry{
 			$this->fullList[$index] = $block;
 			$this->blastResistance[$index] = $block->getBreakInfo()->getBlastResistance();
 			$this->light[$index] = $block->getLightLevel();
-			$this->lightFilter[$index] = min(15, $block->getLightFilter() + LightUpdate::BASE_LIGHT_FILTER);
+			$this->lightFilter[$index] = min(15, $block->getLightFilter() + 1);
 			if($block->blocksDirectSkyLight()){
 				$this->blocksDirectSkyLight[$index] = true;
 			}
