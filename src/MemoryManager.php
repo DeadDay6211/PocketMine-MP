@@ -60,6 +60,8 @@ class MemoryManager{
 
 	private int $garbageCollectionPeriod;
 	private int $garbageCollectionTicker = 0;
+	private int $gcCheckTicker = 0;
+	private const GC_CHECK_INTERVAL = 5; // only call gc_status() every 5 ticks instead of every tick
 
 	private int $lowMemChunkRadiusOverride;
 
@@ -195,7 +197,8 @@ class MemoryManager{
 		if($this->garbageCollectionPeriod > 0 && ++$this->garbageCollectionTicker >= $this->garbageCollectionPeriod){
 			$this->garbageCollectionTicker = 0;
 			$this->triggerGarbageCollector();
-		}else{
+		}elseif(++$this->gcCheckTicker >= self::GC_CHECK_INTERVAL){
+			$this->gcCheckTicker = 0;
 			$this->cycleGcManager->maybeCollectCycles();
 		}
 

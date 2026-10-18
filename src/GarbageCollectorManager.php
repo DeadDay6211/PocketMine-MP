@@ -40,16 +40,26 @@ use function sprintf;
  * The GC trigger behaviour in this class was adapted from Zend/zend_gc.c as of PHP 8.3.14.
  */
 final class GarbageCollectorManager{
-	//TODO: These values could be adjusted to better suit PM, but for now we just want to mirror PHP GC to minimize
-	//behavioural changes.
+	// Raised thresholds for event/BedWars servers:
+	// - DEFAULT raised from 10_001 to 100_001 so GC only triggers after many more root objects accumulate
+	// - STEP raised so threshold grows faster after a non-productive GC run
+	// - TRIGGER kept low so we still benefit from GC when it's useful
+	// Net effect: GC runs far less frequently, reducing main-thread stalls
 	private const GC_THRESHOLD_TRIGGER = 100;
 	private const GC_THRESHOLD_MAX = 1_000_000_000;
-	private const GC_THRESHOLD_DEFAULT = 10_001;
-	private const GC_THRESHOLD_STEP = 10_000;
+	private const GC_THRESHOLD_DEFAULT = 100_001;
+	private const GC_THRESHOLD_STEP = 50_000;
 
 	private int $threshold = self::GC_THRESHOLD_DEFAULT;
 	private int $collectionTimeTotalNs = 0;
 	private int $runs = 0;
+	/** Nanosecond timestamp of the last GC run end — enforces minimum interval */
+	private int $lastRunEndNs = 0;
+	/**
+	 * Minimum nanoseconds between two GC runs: 10 seconds.
+	 * Prevents back-to-back spikes when roots pile up after a large game burst.
+	 */
+	private const GC_MIN_INTERVAL_NS = 10_000_000_000;
 
 	private \Logger $logger;
 	private TimingsHandler $timings;
@@ -85,6 +95,12 @@ final class GarbageCollectorManager{
 			return 0;
 		}
 
+		// enforce minimum interval to prevent back-to-back spikes
+		$now = hrtime(true);
+		if($this->lastRunEndNs !== 0 && ($now - $this->lastRunEndNs) < self::GC_MIN_INTERVAL_NS){
+			return 0;
+		}
+
 		$this->timings->startTiming();
 
 		$start = hrtime(true);
@@ -98,8 +114,10 @@ final class GarbageCollectorManager{
 
 		$time = $end - $start;
 		$this->collectionTimeTotalNs += $time;
+		$this->lastRunEndNs = $end;
 		$this->runs++;
-		$this->logger->info(sprintf(
+		// debug instead of info — no console spam on every GC run
+		$this->logger->debug(sprintf(
 			"Run #%d took %s ms (%s -> %s roots, %s cycles collected) - cumulative GC time: %s ms",
 			$this->runs,
 			number_format($time / 1_000_000, 2),
