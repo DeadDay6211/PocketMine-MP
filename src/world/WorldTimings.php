@@ -28,8 +28,6 @@ use pocketmine\timings\TimingsHandler;
 class WorldTimings{
 
 	public TimingsHandler $setBlock;
-	public TimingsHandler $doBlockLightUpdates;
-	public TimingsHandler $doBlockSkyLightUpdates;
 
 	public TimingsHandler $doChunkUnload;
 	public TimingsHandler $scheduledBlockUpdates;
@@ -72,8 +70,6 @@ class WorldTimings{
 		$name = $world->getFolderName();
 
 		$this->setBlock = self::newTimer($name, "Set Blocks");
-		$this->doBlockLightUpdates = self::newTimer($name, "Block Light Updates");
-		$this->doBlockSkyLightUpdates = self::newTimer($name, "Sky Light Updates");
 
 		$this->doChunkUnload = self::newTimer($name, "Unload Chunks");
 		$this->scheduledBlockUpdates = self::newTimer($name, "Scheduled Block Updates");

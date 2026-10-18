@@ -107,19 +107,19 @@ class SubChunk{
 	public function getBiomeArray() : PalettedBlockArray{ return $this->biomes; }
 
 	public function getBlockSkyLightArray() : LightArray{
-		return $this->skyLight ??= LightArray::fill(0);
+		return $this->skyLight ??= LightArray::fill(15);
 	}
 
 	public function setBlockSkyLightArray(LightArray $data) : void{
-		$this->skyLight = $data;
+		$this->skyLight = LightArray::fill(15);
 	}
 
 	public function getBlockLightArray() : LightArray{
-		return $this->blockLight ??= LightArray::fill(0);
+		return $this->blockLight ??= LightArray::fill(15);
 	}
 
 	public function setBlockLightArray(LightArray $data) : void{
-		$this->blockLight = $data;
+		$this->blockLight = LightArray::fill(15);
 	}
 
 	/**
