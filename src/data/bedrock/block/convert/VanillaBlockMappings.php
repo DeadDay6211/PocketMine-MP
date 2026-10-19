@@ -31,6 +31,8 @@ use pocketmine\block\BambooSapling;
 use pocketmine\block\Barrel;
 use pocketmine\block\Bed;
 use pocketmine\block\Bedrock;
+use pocketmine\block\BeeHive;
+use pocketmine\block\BeeNest;
 use pocketmine\block\Bell;
 use pocketmine\block\BigDripleafHead;
 use pocketmine\block\Block;
@@ -39,9 +41,11 @@ use pocketmine\block\Cactus;
 use pocketmine\block\Cake;
 use pocketmine\block\Candle;
 use pocketmine\block\CaveVines;
+use pocketmine\block\CherrySapling;
 use pocketmine\block\ChiseledBookshelf;
 use pocketmine\block\ChorusFlower;
 use pocketmine\block\CocoaBlock;
+use pocketmine\block\Composter;
 use pocketmine\block\Copper;
 use pocketmine\block\CopperLantern;
 use pocketmine\block\CyclingPotentSulfur;
@@ -59,6 +63,7 @@ use pocketmine\block\FloorCoralFan;
 use pocketmine\block\Froglight;
 use pocketmine\block\FrostedIce;
 use pocketmine\block\GlazedTerracotta;
+use pocketmine\block\Grindstone;
 use pocketmine\block\Hopper;
 use pocketmine\block\Lantern;
 use pocketmine\block\Leaves;
@@ -156,6 +161,7 @@ final class VanillaBlockMappings{
 		self::register1to1CustomMappings($reg, $commonProperties);
 
 		self::registerSplitMappings($reg, $commonProperties);
+		self::registerR19PlusMappings($reg, $commonProperties);
 	}
 
 	private static function registerSimpleIdOnlyMappings(BlockSerializerDeserializerRegistrar $reg) : void{
@@ -1748,5 +1754,49 @@ final class VanillaBlockMappings{
 				default => self::deserializeAsymmetric($cyclingPotentSulfurModel, $in)
 			}
 		);
+	}
+	private static function registerR19PlusMappings(BlockSerializerDeserializerRegistrar $reg, CommonProperties $commonProperties) : void{
+		$reg->mapSimple(Blocks::BUSH(), Ids::BUSH);
+		$reg->mapSimple(Blocks::DRIPSTONE_BLOCK(), Ids::DRIPSTONE_BLOCK);
+		$reg->mapSimple(Blocks::END_PORTAL(), Ids::END_PORTAL);
+		$reg->mapSimple(Blocks::FIREFLY_BUSH(), Ids::FIREFLY_BUSH);
+		$reg->mapSimple(Blocks::LODESTONE(), Ids::LODESTONE);
+		$reg->mapSimple(Blocks::MOSS_BLOCK(), Ids::MOSS_BLOCK);
+		$reg->mapSimple(Blocks::MOSS_CARPET(), Ids::MOSS_CARPET);
+		$reg->mapSimple(Blocks::SHORT_DRY_GRASS(), Ids::SHORT_DRY_GRASS);
+		$reg->mapSimple(Blocks::TALL_DRY_GRASS(), Ids::TALL_DRY_GRASS);
+
+		foreach([Blocks::BEE_NEST(), Blocks::BEEHIVE()] as $block){
+			$reg->mapModel(Model::create($block, $block instanceof BeeNest ? Ids::BEE_NEST : Ids::BEEHIVE)->properties([
+				$commonProperties->horizontalFacingSWNE,
+				new IntProperty(StateNames::HONEY_LEVEL, BeeHive::MIN_HONEY_LEVEL, BeeHive::MAX_HONEY_LEVEL, fn(BeeHive $b) => $b->getHoneyLevel(), fn(BeeHive $b, int $v) => $b->setHoneyLevel($v))
+			]));
+		}
+		$reg->mapModel(Model::create(Blocks::CHERRY_SAPLING(), Ids::CHERRY_SAPLING)->properties([
+			new BoolProperty(StateNames::AGE_BIT, fn(CherrySapling $b) => $b->isReady(), fn(CherrySapling $b, bool $v) => $b->setReady($v))
+		]));
+		$reg->mapModel(Model::create(Blocks::COMPOSTER(), Ids::COMPOSTER)->properties([
+			new IntProperty(StateNames::COMPOSTER_FILL_LEVEL, Composter::MIN_FILL_LEVEL, Composter::MAX_FILL_LEVEL, fn(Composter $b) => $b->getFillLevel(), fn(Composter $b, int $v) => $b->setFillLevel($v))
+		]));
+		$reg->mapModel(Model::create(Blocks::COPPER_GOLEM_STATUE(), Ids::COPPER_GOLEM_STATUE)->properties([$commonProperties->horizontalFacingCardinal]));
+		$reg->mapModel(Model::create(Blocks::EXPOSED_COPPER_GOLEM_STATUE(), Ids::EXPOSED_COPPER_GOLEM_STATUE)->properties([$commonProperties->horizontalFacingCardinal]));
+		$reg->mapModel(Model::create(Blocks::WEATHERED_COPPER_GOLEM_STATUE(), Ids::WEATHERED_COPPER_GOLEM_STATUE)->properties([$commonProperties->horizontalFacingCardinal]));
+		$reg->mapModel(Model::create(Blocks::OXIDIZED_COPPER_GOLEM_STATUE(), Ids::OXIDIZED_COPPER_GOLEM_STATUE)->properties([$commonProperties->horizontalFacingCardinal]));
+		$reg->mapModel(Model::create(Blocks::WAXED_COPPER_GOLEM_STATUE(), Ids::WAXED_COPPER_GOLEM_STATUE)->properties([$commonProperties->horizontalFacingCardinal]));
+		$reg->mapModel(Model::create(Blocks::WAXED_EXPOSED_COPPER_GOLEM_STATUE(), Ids::WAXED_EXPOSED_COPPER_GOLEM_STATUE)->properties([$commonProperties->horizontalFacingCardinal]));
+		$reg->mapModel(Model::create(Blocks::WAXED_WEATHERED_COPPER_GOLEM_STATUE(), Ids::WAXED_WEATHERED_COPPER_GOLEM_STATUE)->properties([$commonProperties->horizontalFacingCardinal]));
+		$reg->mapModel(Model::create(Blocks::WAXED_OXIDIZED_COPPER_GOLEM_STATUE(), Ids::WAXED_OXIDIZED_COPPER_GOLEM_STATUE)->properties([$commonProperties->horizontalFacingCardinal]));
+		$reg->mapModel(Model::create(Blocks::DECORATED_POT(), Ids::DECORATED_POT)->properties([$commonProperties->horizontalFacingSWNE]));
+		$reg->mapModel(Model::create(Blocks::GRINDSTONE(), Ids::GRINDSTONE)->properties([
+			new ValueFromStringProperty(StateNames::ATTACHMENT, ValueMappings::getInstance()->bellAttachmentType, fn(Grindstone $b) => $b->getAttachmentType(), fn(Grindstone $b, BellAttachmentType $v) => $b->setAttachmentType($v)),
+			$commonProperties->horizontalFacingSWNE
+		]));
+		foreach([[Blocks::LEAF_LITTER(), Ids::LEAF_LITTER], [Blocks::WILDFLOWERS(), Ids::WILDFLOWERS]] as [$block, $id]){
+			$reg->mapModel(Model::create($block, $id)->properties([
+				//only 0-3 are used, but GROWTH state can go up to 7
+				new IntProperty(StateNames::GROWTH, 0, 7, fn(PinkPetals $b) => $b->getCount(), fn(PinkPetals $b, int $v) => $b->setCount(min($v, PinkPetals::MAX_COUNT)), offset: 1),
+				$commonProperties->horizontalFacingCardinal
+			]));
+		}
 	}
 }

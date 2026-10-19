@@ -98,7 +98,9 @@ final class VanillaBlocks{
 	private static Beacon $_mBEACON;
 	private static Bed $_mBED;
 	private static Bedrock $_mBEDROCK;
+	private static BeeHive $_mBEEHIVE;
 	private static Beetroot $_mBEETROOTS;
+	private static BeeNest $_mBEE_NEST;
 	private static Bell $_mBELL;
 	private static BigDripleafHead $_mBIG_DRIPLEAF_HEAD;
 	private static BigDripleafStem $_mBIG_DRIPLEAF_STEM;
@@ -138,6 +140,7 @@ final class VanillaBlocks{
 	private static BrownMushroom $_mBROWN_MUSHROOM;
 	private static BrownMushroomBlock $_mBROWN_MUSHROOM_BLOCK;
 	private static BuddingAmethyst $_mBUDDING_AMETHYST;
+	private static Bush $_mBUSH;
 	private static Cactus $_mCACTUS;
 	private static CactusFlower $_mCACTUS_FLOWER;
 	private static Cake $_mCAKE;
@@ -164,6 +167,7 @@ final class VanillaBlocks{
 	private static Wood $_mCHERRY_LOG;
 	private static Planks $_mCHERRY_PLANKS;
 	private static WoodenPressurePlate $_mCHERRY_PRESSURE_PLATE;
+	private static CherrySapling $_mCHERRY_SAPLING;
 	private static FloorSign $_mCHERRY_SIGN;
 	private static WoodenSlab $_mCHERRY_SLAB;
 	private static WoodenStairs $_mCHERRY_STAIRS;
@@ -209,6 +213,7 @@ final class VanillaBlocks{
 	private static Wall $_mCOBBLESTONE_WALL;
 	private static Cobweb $_mCOBWEB;
 	private static CocoaBlock $_mCOCOA_POD;
+	private static Composter $_mCOMPOSTER;
 	private static ChemistryTable $_mCOMPOUND_CREATOR;
 	private static Concrete $_mCONCRETE;
 	private static ConcretePowder $_mCONCRETE_POWDER;
@@ -218,6 +223,7 @@ final class VanillaBlocks{
 	private static CopperBulb $_mCOPPER_BULB;
 	private static CopperChain $_mCOPPER_CHAIN;
 	private static CopperDoor $_mCOPPER_DOOR;
+	private static CopperGolemStatue $_mCOPPER_GOLEM_STATUE;
 	private static CopperGrate $_mCOPPER_GRATE;
 	private static CopperLantern $_mCOPPER_LANTERN;
 	private static CopperOre $_mCOPPER_ORE;
@@ -285,6 +291,7 @@ final class VanillaBlocks{
 	private static Stair $_mDARK_PRISMARINE_STAIRS;
 	private static DaylightSensor $_mDAYLIGHT_SENSOR;
 	private static DeadBush $_mDEAD_BUSH;
+	private static DecoratedPot $_mDECORATED_POT;
 	private static SimplePillar $_mDEEPSLATE;
 	private static Opaque $_mDEEPSLATE_BRICKS;
 	private static Slab $_mDEEPSLATE_BRICK_SLAB;
@@ -314,6 +321,7 @@ final class VanillaBlocks{
 	private static DoubleTallGrass $_mDOUBLE_TALLGRASS;
 	private static DragonEgg $_mDRAGON_EGG;
 	private static DriedKelp $_mDRIED_KELP;
+	private static Opaque $_mDRIPSTONE_BLOCK;
 	private static DyedCandle $_mDYED_CANDLE;
 	private static DyedShulkerBox $_mDYED_SHULKER_BOX;
 	private static Element $_mELEMENT_ACTINIUM;
@@ -440,6 +448,7 @@ final class VanillaBlocks{
 	private static EmeraldOre $_mEMERALD_ORE;
 	private static EnchantingTable $_mENCHANTING_TABLE;
 	private static EnderChest $_mENDER_CHEST;
+	private static EndPortal $_mEND_PORTAL;
 	private static EndPortalFrame $_mEND_PORTAL_FRAME;
 	private static EndRod $_mEND_ROD;
 	private static Opaque $_mEND_STONE;
@@ -447,10 +456,12 @@ final class VanillaBlocks{
 	private static Slab $_mEND_STONE_BRICK_SLAB;
 	private static Stair $_mEND_STONE_BRICK_STAIRS;
 	private static Wall $_mEND_STONE_BRICK_WALL;
+	private static CopperGolemStatue $_mEXPOSED_COPPER_GOLEM_STATUE;
 	private static Slab $_mFAKE_WOODEN_SLAB;
 	private static Farmland $_mFARMLAND;
 	private static TallGrass $_mFERN;
 	private static Fire $_mFIRE;
+	private static FireflyBush $_mFIREFLY_BUSH;
 	private static FletchingTable $_mFLETCHING_TABLE;
 	private static Azalea $_mFLOWERING_AZALEA;
 	private static Leaves $_mFLOWERING_AZALEA_LEAVES;
@@ -476,6 +487,7 @@ final class VanillaBlocks{
 	private static GrassPath $_mGRASS_PATH;
 	private static Gravel $_mGRAVEL;
 	private static Torch $_mGREEN_TORCH;
+	private static Grindstone $_mGRINDSTONE;
 	private static HangingRoots $_mHANGING_ROOTS;
 	private static HardenedClay $_mHARDENED_CLAY;
 	private static HardenedGlass $_mHARDENED_GLASS;
@@ -528,6 +540,7 @@ final class VanillaBlocks{
 	private static DoubleTallGrass $_mLARGE_FERN;
 	private static Lava $_mLAVA;
 	private static LavaCauldron $_mLAVA_CAULDRON;
+	private static LeafLitter $_mLEAF_LITTER;
 	private static Lectern $_mLECTERN;
 	private static Opaque $_mLEGACY_STONECUTTER;
 	private static Lever $_mLEVER;
@@ -537,6 +550,7 @@ final class VanillaBlocks{
 	private static Flower $_mLILY_OF_THE_VALLEY;
 	private static WaterLily $_mLILY_PAD;
 	private static LitPumpkin $_mLIT_PUMPKIN;
+	private static Opaque $_mLODESTONE;
 	private static Loom $_mLOOM;
 	private static Magma $_mMAGMA;
 	private static WoodenButton $_mMANGROVE_BUTTON;
@@ -570,6 +584,8 @@ final class VanillaBlocks{
 	private static Slab $_mMOSSY_STONE_BRICK_SLAB;
 	private static Stair $_mMOSSY_STONE_BRICK_STAIRS;
 	private static Wall $_mMOSSY_STONE_BRICK_WALL;
+	private static Opaque $_mMOSS_BLOCK;
+	private static MossCarpet $_mMOSS_CARPET;
 	private static Opaque $_mMUD;
 	private static SimplePillar $_mMUDDY_MANGROVE_ROOTS;
 	private static Opaque $_mMUD_BRICKS;
@@ -616,6 +632,7 @@ final class VanillaBlocks{
 	private static OminousWallBanner $_mOMINOUS_WALL_BANNER;
 	private static Flower $_mORANGE_TULIP;
 	private static Flower $_mOXEYE_DAISY;
+	private static CopperGolemStatue $_mOXIDIZED_COPPER_GOLEM_STATUE;
 	private static PackedIce $_mPACKED_ICE;
 	private static Opaque $_mPACKED_MUD;
 	private static WoodenButton $_mPALE_OAK_BUTTON;
@@ -743,6 +760,7 @@ final class VanillaBlocks{
 	private static Sculk $_mSCULK;
 	private static SeaLantern $_mSEA_LANTERN;
 	private static SeaPickle $_mSEA_PICKLE;
+	private static DryGrass $_mSHORT_DRY_GRASS;
 	private static Opaque $_mSHROOMLIGHT;
 	private static ShulkerBox $_mSHULKER_BOX;
 	private static Slime $_mSLIME;
@@ -816,6 +834,7 @@ final class VanillaBlocks{
 	private static Wall $_mSULFUR_WALL;
 	private static DoublePlant $_mSUNFLOWER;
 	private static SweetBerryBush $_mSWEET_BERRY_BUSH;
+	private static DryGrass $_mTALL_DRY_GRASS;
 	private static TallGrass $_mTALL_GRASS;
 	private static TintedGlass $_mTINTED_GLASS;
 	private static TNT $_mTNT;
@@ -860,12 +879,18 @@ final class VanillaBlocks{
 	private static Opaque $_mWARPED_WART_BLOCK;
 	private static Water $_mWATER;
 	private static WaterCauldron $_mWATER_CAULDRON;
+	private static CopperGolemStatue $_mWAXED_COPPER_GOLEM_STATUE;
+	private static CopperGolemStatue $_mWAXED_EXPOSED_COPPER_GOLEM_STATUE;
+	private static CopperGolemStatue $_mWAXED_OXIDIZED_COPPER_GOLEM_STATUE;
+	private static CopperGolemStatue $_mWAXED_WEATHERED_COPPER_GOLEM_STATUE;
+	private static CopperGolemStatue $_mWEATHERED_COPPER_GOLEM_STATUE;
 	private static NetherVines $_mWEEPING_VINES;
 	private static WeightedPressurePlateHeavy $_mWEIGHTED_PRESSURE_PLATE_HEAVY;
 	private static WeightedPressurePlateLight $_mWEIGHTED_PRESSURE_PLATE_LIGHT;
 	private static WetPotentSulfur $_mWET_POTENT_SULFUR;
 	private static Wheat $_mWHEAT;
 	private static Flower $_mWHITE_TULIP;
+	private static Wildflowers $_mWILDFLOWERS;
 	private static WitherRose $_mWITHER_ROSE;
 	private static Wool $_mWOOL;
 
@@ -962,7 +987,9 @@ final class VanillaBlocks{
 			"beacon" => fn(Beacon $v) => self::$_mBEACON = $v,
 			"bed" => fn(Bed $v) => self::$_mBED = $v,
 			"bedrock" => fn(Bedrock $v) => self::$_mBEDROCK = $v,
+			"beehive" => fn(BeeHive $v) => self::$_mBEEHIVE = $v,
 			"beetroots" => fn(Beetroot $v) => self::$_mBEETROOTS = $v,
+			"bee_nest" => fn(BeeNest $v) => self::$_mBEE_NEST = $v,
 			"bell" => fn(Bell $v) => self::$_mBELL = $v,
 			"big_dripleaf_head" => fn(BigDripleafHead $v) => self::$_mBIG_DRIPLEAF_HEAD = $v,
 			"big_dripleaf_stem" => fn(BigDripleafStem $v) => self::$_mBIG_DRIPLEAF_STEM = $v,
@@ -1002,6 +1029,7 @@ final class VanillaBlocks{
 			"brown_mushroom" => fn(BrownMushroom $v) => self::$_mBROWN_MUSHROOM = $v,
 			"brown_mushroom_block" => fn(BrownMushroomBlock $v) => self::$_mBROWN_MUSHROOM_BLOCK = $v,
 			"budding_amethyst" => fn(BuddingAmethyst $v) => self::$_mBUDDING_AMETHYST = $v,
+			"bush" => fn(Bush $v) => self::$_mBUSH = $v,
 			"cactus" => fn(Cactus $v) => self::$_mCACTUS = $v,
 			"cactus_flower" => fn(CactusFlower $v) => self::$_mCACTUS_FLOWER = $v,
 			"cake" => fn(Cake $v) => self::$_mCAKE = $v,
@@ -1028,6 +1056,7 @@ final class VanillaBlocks{
 			"cherry_log" => fn(Wood $v) => self::$_mCHERRY_LOG = $v,
 			"cherry_planks" => fn(Planks $v) => self::$_mCHERRY_PLANKS = $v,
 			"cherry_pressure_plate" => fn(WoodenPressurePlate $v) => self::$_mCHERRY_PRESSURE_PLATE = $v,
+			"cherry_sapling" => fn(CherrySapling $v) => self::$_mCHERRY_SAPLING = $v,
 			"cherry_sign" => fn(FloorSign $v) => self::$_mCHERRY_SIGN = $v,
 			"cherry_slab" => fn(WoodenSlab $v) => self::$_mCHERRY_SLAB = $v,
 			"cherry_stairs" => fn(WoodenStairs $v) => self::$_mCHERRY_STAIRS = $v,
@@ -1073,6 +1102,7 @@ final class VanillaBlocks{
 			"cobblestone_wall" => fn(Wall $v) => self::$_mCOBBLESTONE_WALL = $v,
 			"cobweb" => fn(Cobweb $v) => self::$_mCOBWEB = $v,
 			"cocoa_pod" => fn(CocoaBlock $v) => self::$_mCOCOA_POD = $v,
+			"composter" => fn(Composter $v) => self::$_mCOMPOSTER = $v,
 			"compound_creator" => fn(ChemistryTable $v) => self::$_mCOMPOUND_CREATOR = $v,
 			"concrete" => fn(Concrete $v) => self::$_mCONCRETE = $v,
 			"concrete_powder" => fn(ConcretePowder $v) => self::$_mCONCRETE_POWDER = $v,
@@ -1082,6 +1112,7 @@ final class VanillaBlocks{
 			"copper_bulb" => fn(CopperBulb $v) => self::$_mCOPPER_BULB = $v,
 			"copper_chain" => fn(CopperChain $v) => self::$_mCOPPER_CHAIN = $v,
 			"copper_door" => fn(CopperDoor $v) => self::$_mCOPPER_DOOR = $v,
+			"copper_golem_statue" => fn(CopperGolemStatue $v) => self::$_mCOPPER_GOLEM_STATUE = $v,
 			"copper_grate" => fn(CopperGrate $v) => self::$_mCOPPER_GRATE = $v,
 			"copper_lantern" => fn(CopperLantern $v) => self::$_mCOPPER_LANTERN = $v,
 			"copper_ore" => fn(CopperOre $v) => self::$_mCOPPER_ORE = $v,
@@ -1149,6 +1180,7 @@ final class VanillaBlocks{
 			"dark_prismarine_stairs" => fn(Stair $v) => self::$_mDARK_PRISMARINE_STAIRS = $v,
 			"daylight_sensor" => fn(DaylightSensor $v) => self::$_mDAYLIGHT_SENSOR = $v,
 			"dead_bush" => fn(DeadBush $v) => self::$_mDEAD_BUSH = $v,
+			"decorated_pot" => fn(DecoratedPot $v) => self::$_mDECORATED_POT = $v,
 			"deepslate" => fn(SimplePillar $v) => self::$_mDEEPSLATE = $v,
 			"deepslate_bricks" => fn(Opaque $v) => self::$_mDEEPSLATE_BRICKS = $v,
 			"deepslate_brick_slab" => fn(Slab $v) => self::$_mDEEPSLATE_BRICK_SLAB = $v,
@@ -1178,6 +1210,7 @@ final class VanillaBlocks{
 			"double_tallgrass" => fn(DoubleTallGrass $v) => self::$_mDOUBLE_TALLGRASS = $v,
 			"dragon_egg" => fn(DragonEgg $v) => self::$_mDRAGON_EGG = $v,
 			"dried_kelp" => fn(DriedKelp $v) => self::$_mDRIED_KELP = $v,
+			"dripstone_block" => fn(Opaque $v) => self::$_mDRIPSTONE_BLOCK = $v,
 			"dyed_candle" => fn(DyedCandle $v) => self::$_mDYED_CANDLE = $v,
 			"dyed_shulker_box" => fn(DyedShulkerBox $v) => self::$_mDYED_SHULKER_BOX = $v,
 			"element_actinium" => fn(Element $v) => self::$_mELEMENT_ACTINIUM = $v,
@@ -1304,6 +1337,7 @@ final class VanillaBlocks{
 			"emerald_ore" => fn(EmeraldOre $v) => self::$_mEMERALD_ORE = $v,
 			"enchanting_table" => fn(EnchantingTable $v) => self::$_mENCHANTING_TABLE = $v,
 			"ender_chest" => fn(EnderChest $v) => self::$_mENDER_CHEST = $v,
+			"end_portal" => fn(EndPortal $v) => self::$_mEND_PORTAL = $v,
 			"end_portal_frame" => fn(EndPortalFrame $v) => self::$_mEND_PORTAL_FRAME = $v,
 			"end_rod" => fn(EndRod $v) => self::$_mEND_ROD = $v,
 			"end_stone" => fn(Opaque $v) => self::$_mEND_STONE = $v,
@@ -1311,10 +1345,12 @@ final class VanillaBlocks{
 			"end_stone_brick_slab" => fn(Slab $v) => self::$_mEND_STONE_BRICK_SLAB = $v,
 			"end_stone_brick_stairs" => fn(Stair $v) => self::$_mEND_STONE_BRICK_STAIRS = $v,
 			"end_stone_brick_wall" => fn(Wall $v) => self::$_mEND_STONE_BRICK_WALL = $v,
+			"exposed_copper_golem_statue" => fn(CopperGolemStatue $v) => self::$_mEXPOSED_COPPER_GOLEM_STATUE = $v,
 			"fake_wooden_slab" => fn(Slab $v) => self::$_mFAKE_WOODEN_SLAB = $v,
 			"farmland" => fn(Farmland $v) => self::$_mFARMLAND = $v,
 			"fern" => fn(TallGrass $v) => self::$_mFERN = $v,
 			"fire" => fn(Fire $v) => self::$_mFIRE = $v,
+			"firefly_bush" => fn(FireflyBush $v) => self::$_mFIREFLY_BUSH = $v,
 			"fletching_table" => fn(FletchingTable $v) => self::$_mFLETCHING_TABLE = $v,
 			"flowering_azalea" => fn(Azalea $v) => self::$_mFLOWERING_AZALEA = $v,
 			"flowering_azalea_leaves" => fn(Leaves $v) => self::$_mFLOWERING_AZALEA_LEAVES = $v,
@@ -1340,6 +1376,7 @@ final class VanillaBlocks{
 			"grass_path" => fn(GrassPath $v) => self::$_mGRASS_PATH = $v,
 			"gravel" => fn(Gravel $v) => self::$_mGRAVEL = $v,
 			"green_torch" => fn(Torch $v) => self::$_mGREEN_TORCH = $v,
+			"grindstone" => fn(Grindstone $v) => self::$_mGRINDSTONE = $v,
 			"hanging_roots" => fn(HangingRoots $v) => self::$_mHANGING_ROOTS = $v,
 			"hardened_clay" => fn(HardenedClay $v) => self::$_mHARDENED_CLAY = $v,
 			"hardened_glass" => fn(HardenedGlass $v) => self::$_mHARDENED_GLASS = $v,
@@ -1392,6 +1429,7 @@ final class VanillaBlocks{
 			"large_fern" => fn(DoubleTallGrass $v) => self::$_mLARGE_FERN = $v,
 			"lava" => fn(Lava $v) => self::$_mLAVA = $v,
 			"lava_cauldron" => fn(LavaCauldron $v) => self::$_mLAVA_CAULDRON = $v,
+			"leaf_litter" => fn(LeafLitter $v) => self::$_mLEAF_LITTER = $v,
 			"lectern" => fn(Lectern $v) => self::$_mLECTERN = $v,
 			"legacy_stonecutter" => fn(Opaque $v) => self::$_mLEGACY_STONECUTTER = $v,
 			"lever" => fn(Lever $v) => self::$_mLEVER = $v,
@@ -1401,6 +1439,7 @@ final class VanillaBlocks{
 			"lily_of_the_valley" => fn(Flower $v) => self::$_mLILY_OF_THE_VALLEY = $v,
 			"lily_pad" => fn(WaterLily $v) => self::$_mLILY_PAD = $v,
 			"lit_pumpkin" => fn(LitPumpkin $v) => self::$_mLIT_PUMPKIN = $v,
+			"lodestone" => fn(Opaque $v) => self::$_mLODESTONE = $v,
 			"loom" => fn(Loom $v) => self::$_mLOOM = $v,
 			"magma" => fn(Magma $v) => self::$_mMAGMA = $v,
 			"mangrove_button" => fn(WoodenButton $v) => self::$_mMANGROVE_BUTTON = $v,
@@ -1434,6 +1473,8 @@ final class VanillaBlocks{
 			"mossy_stone_brick_slab" => fn(Slab $v) => self::$_mMOSSY_STONE_BRICK_SLAB = $v,
 			"mossy_stone_brick_stairs" => fn(Stair $v) => self::$_mMOSSY_STONE_BRICK_STAIRS = $v,
 			"mossy_stone_brick_wall" => fn(Wall $v) => self::$_mMOSSY_STONE_BRICK_WALL = $v,
+			"moss_block" => fn(Opaque $v) => self::$_mMOSS_BLOCK = $v,
+			"moss_carpet" => fn(MossCarpet $v) => self::$_mMOSS_CARPET = $v,
 			"mud" => fn(Opaque $v) => self::$_mMUD = $v,
 			"muddy_mangrove_roots" => fn(SimplePillar $v) => self::$_mMUDDY_MANGROVE_ROOTS = $v,
 			"mud_bricks" => fn(Opaque $v) => self::$_mMUD_BRICKS = $v,
@@ -1480,6 +1521,7 @@ final class VanillaBlocks{
 			"ominous_wall_banner" => fn(OminousWallBanner $v) => self::$_mOMINOUS_WALL_BANNER = $v,
 			"orange_tulip" => fn(Flower $v) => self::$_mORANGE_TULIP = $v,
 			"oxeye_daisy" => fn(Flower $v) => self::$_mOXEYE_DAISY = $v,
+			"oxidized_copper_golem_statue" => fn(CopperGolemStatue $v) => self::$_mOXIDIZED_COPPER_GOLEM_STATUE = $v,
 			"packed_ice" => fn(PackedIce $v) => self::$_mPACKED_ICE = $v,
 			"packed_mud" => fn(Opaque $v) => self::$_mPACKED_MUD = $v,
 			"pale_oak_button" => fn(WoodenButton $v) => self::$_mPALE_OAK_BUTTON = $v,
@@ -1607,6 +1649,7 @@ final class VanillaBlocks{
 			"sculk" => fn(Sculk $v) => self::$_mSCULK = $v,
 			"sea_lantern" => fn(SeaLantern $v) => self::$_mSEA_LANTERN = $v,
 			"sea_pickle" => fn(SeaPickle $v) => self::$_mSEA_PICKLE = $v,
+			"short_dry_grass" => fn(DryGrass $v) => self::$_mSHORT_DRY_GRASS = $v,
 			"shroomlight" => fn(Opaque $v) => self::$_mSHROOMLIGHT = $v,
 			"shulker_box" => fn(ShulkerBox $v) => self::$_mSHULKER_BOX = $v,
 			"slime" => fn(Slime $v) => self::$_mSLIME = $v,
@@ -1680,6 +1723,7 @@ final class VanillaBlocks{
 			"sulfur_wall" => fn(Wall $v) => self::$_mSULFUR_WALL = $v,
 			"sunflower" => fn(DoublePlant $v) => self::$_mSUNFLOWER = $v,
 			"sweet_berry_bush" => fn(SweetBerryBush $v) => self::$_mSWEET_BERRY_BUSH = $v,
+			"tall_dry_grass" => fn(DryGrass $v) => self::$_mTALL_DRY_GRASS = $v,
 			"tall_grass" => fn(TallGrass $v) => self::$_mTALL_GRASS = $v,
 			"tinted_glass" => fn(TintedGlass $v) => self::$_mTINTED_GLASS = $v,
 			"tnt" => fn(TNT $v) => self::$_mTNT = $v,
@@ -1724,12 +1768,18 @@ final class VanillaBlocks{
 			"warped_wart_block" => fn(Opaque $v) => self::$_mWARPED_WART_BLOCK = $v,
 			"water" => fn(Water $v) => self::$_mWATER = $v,
 			"water_cauldron" => fn(WaterCauldron $v) => self::$_mWATER_CAULDRON = $v,
+			"waxed_copper_golem_statue" => fn(CopperGolemStatue $v) => self::$_mWAXED_COPPER_GOLEM_STATUE = $v,
+			"waxed_exposed_copper_golem_statue" => fn(CopperGolemStatue $v) => self::$_mWAXED_EXPOSED_COPPER_GOLEM_STATUE = $v,
+			"waxed_oxidized_copper_golem_statue" => fn(CopperGolemStatue $v) => self::$_mWAXED_OXIDIZED_COPPER_GOLEM_STATUE = $v,
+			"waxed_weathered_copper_golem_statue" => fn(CopperGolemStatue $v) => self::$_mWAXED_WEATHERED_COPPER_GOLEM_STATUE = $v,
+			"weathered_copper_golem_statue" => fn(CopperGolemStatue $v) => self::$_mWEATHERED_COPPER_GOLEM_STATUE = $v,
 			"weeping_vines" => fn(NetherVines $v) => self::$_mWEEPING_VINES = $v,
 			"weighted_pressure_plate_heavy" => fn(WeightedPressurePlateHeavy $v) => self::$_mWEIGHTED_PRESSURE_PLATE_HEAVY = $v,
 			"weighted_pressure_plate_light" => fn(WeightedPressurePlateLight $v) => self::$_mWEIGHTED_PRESSURE_PLATE_LIGHT = $v,
 			"wet_potent_sulfur" => fn(WetPotentSulfur $v) => self::$_mWET_POTENT_SULFUR = $v,
 			"wheat" => fn(Wheat $v) => self::$_mWHEAT = $v,
 			"white_tulip" => fn(Flower $v) => self::$_mWHITE_TULIP = $v,
+			"wildflowers" => fn(Wildflowers $v) => self::$_mWILDFLOWERS = $v,
 			"wither_rose" => fn(WitherRose $v) => self::$_mWITHER_ROSE = $v,
 			"wool" => fn(Wool $v) => self::$_mWOOL = $v,
 		];
@@ -2070,9 +2120,19 @@ final class VanillaBlocks{
 		return clone self::$_mBEDROCK;
 	}
 
+	public static function BEEHIVE() : BeeHive{
+		if(!isset(self::$_mBEEHIVE)){ self::init(); }
+		return clone self::$_mBEEHIVE;
+	}
+
 	public static function BEETROOTS() : Beetroot{
 		if(!isset(self::$_mBEETROOTS)){ self::init(); }
 		return clone self::$_mBEETROOTS;
+	}
+
+	public static function BEE_NEST() : BeeNest{
+		if(!isset(self::$_mBEE_NEST)){ self::init(); }
+		return clone self::$_mBEE_NEST;
 	}
 
 	public static function BELL() : Bell{
@@ -2270,6 +2330,11 @@ final class VanillaBlocks{
 		return clone self::$_mBUDDING_AMETHYST;
 	}
 
+	public static function BUSH() : Bush{
+		if(!isset(self::$_mBUSH)){ self::init(); }
+		return clone self::$_mBUSH;
+	}
+
 	public static function CACTUS() : Cactus{
 		if(!isset(self::$_mCACTUS)){ self::init(); }
 		return clone self::$_mCACTUS;
@@ -2398,6 +2463,11 @@ final class VanillaBlocks{
 	public static function CHERRY_PRESSURE_PLATE() : WoodenPressurePlate{
 		if(!isset(self::$_mCHERRY_PRESSURE_PLATE)){ self::init(); }
 		return clone self::$_mCHERRY_PRESSURE_PLATE;
+	}
+
+	public static function CHERRY_SAPLING() : CherrySapling{
+		if(!isset(self::$_mCHERRY_SAPLING)){ self::init(); }
+		return clone self::$_mCHERRY_SAPLING;
 	}
 
 	public static function CHERRY_SIGN() : FloorSign{
@@ -2625,6 +2695,11 @@ final class VanillaBlocks{
 		return clone self::$_mCOCOA_POD;
 	}
 
+	public static function COMPOSTER() : Composter{
+		if(!isset(self::$_mCOMPOSTER)){ self::init(); }
+		return clone self::$_mCOMPOSTER;
+	}
+
 	public static function COMPOUND_CREATOR() : ChemistryTable{
 		if(!isset(self::$_mCOMPOUND_CREATOR)){ self::init(); }
 		return clone self::$_mCOMPOUND_CREATOR;
@@ -2668,6 +2743,11 @@ final class VanillaBlocks{
 	public static function COPPER_DOOR() : CopperDoor{
 		if(!isset(self::$_mCOPPER_DOOR)){ self::init(); }
 		return clone self::$_mCOPPER_DOOR;
+	}
+
+	public static function COPPER_GOLEM_STATUE() : CopperGolemStatue{
+		if(!isset(self::$_mCOPPER_GOLEM_STATUE)){ self::init(); }
+		return clone self::$_mCOPPER_GOLEM_STATUE;
 	}
 
 	public static function COPPER_GRATE() : CopperGrate{
@@ -3005,6 +3085,11 @@ final class VanillaBlocks{
 		return clone self::$_mDEAD_BUSH;
 	}
 
+	public static function DECORATED_POT() : DecoratedPot{
+		if(!isset(self::$_mDECORATED_POT)){ self::init(); }
+		return clone self::$_mDECORATED_POT;
+	}
+
 	public static function DEEPSLATE() : SimplePillar{
 		if(!isset(self::$_mDEEPSLATE)){ self::init(); }
 		return clone self::$_mDEEPSLATE;
@@ -3148,6 +3233,11 @@ final class VanillaBlocks{
 	public static function DRIED_KELP() : DriedKelp{
 		if(!isset(self::$_mDRIED_KELP)){ self::init(); }
 		return clone self::$_mDRIED_KELP;
+	}
+
+	public static function DRIPSTONE_BLOCK() : Opaque{
+		if(!isset(self::$_mDRIPSTONE_BLOCK)){ self::init(); }
+		return clone self::$_mDRIPSTONE_BLOCK;
 	}
 
 	public static function DYED_CANDLE() : DyedCandle{
@@ -3780,6 +3870,11 @@ final class VanillaBlocks{
 		return clone self::$_mENDER_CHEST;
 	}
 
+	public static function END_PORTAL() : EndPortal{
+		if(!isset(self::$_mEND_PORTAL)){ self::init(); }
+		return clone self::$_mEND_PORTAL;
+	}
+
 	public static function END_PORTAL_FRAME() : EndPortalFrame{
 		if(!isset(self::$_mEND_PORTAL_FRAME)){ self::init(); }
 		return clone self::$_mEND_PORTAL_FRAME;
@@ -3815,6 +3910,11 @@ final class VanillaBlocks{
 		return clone self::$_mEND_STONE_BRICK_WALL;
 	}
 
+	public static function EXPOSED_COPPER_GOLEM_STATUE() : CopperGolemStatue{
+		if(!isset(self::$_mEXPOSED_COPPER_GOLEM_STATUE)){ self::init(); }
+		return clone self::$_mEXPOSED_COPPER_GOLEM_STATUE;
+	}
+
 	public static function FAKE_WOODEN_SLAB() : Slab{
 		if(!isset(self::$_mFAKE_WOODEN_SLAB)){ self::init(); }
 		return clone self::$_mFAKE_WOODEN_SLAB;
@@ -3833,6 +3933,11 @@ final class VanillaBlocks{
 	public static function FIRE() : Fire{
 		if(!isset(self::$_mFIRE)){ self::init(); }
 		return clone self::$_mFIRE;
+	}
+
+	public static function FIREFLY_BUSH() : FireflyBush{
+		if(!isset(self::$_mFIREFLY_BUSH)){ self::init(); }
+		return clone self::$_mFIREFLY_BUSH;
 	}
 
 	public static function FLETCHING_TABLE() : FletchingTable{
@@ -3958,6 +4063,11 @@ final class VanillaBlocks{
 	public static function GREEN_TORCH() : Torch{
 		if(!isset(self::$_mGREEN_TORCH)){ self::init(); }
 		return clone self::$_mGREEN_TORCH;
+	}
+
+	public static function GRINDSTONE() : Grindstone{
+		if(!isset(self::$_mGRINDSTONE)){ self::init(); }
+		return clone self::$_mGRINDSTONE;
 	}
 
 	public static function HANGING_ROOTS() : HangingRoots{
@@ -4220,6 +4330,11 @@ final class VanillaBlocks{
 		return clone self::$_mLAVA_CAULDRON;
 	}
 
+	public static function LEAF_LITTER() : LeafLitter{
+		if(!isset(self::$_mLEAF_LITTER)){ self::init(); }
+		return clone self::$_mLEAF_LITTER;
+	}
+
 	public static function LECTERN() : Lectern{
 		if(!isset(self::$_mLECTERN)){ self::init(); }
 		return clone self::$_mLECTERN;
@@ -4263,6 +4378,11 @@ final class VanillaBlocks{
 	public static function LIT_PUMPKIN() : LitPumpkin{
 		if(!isset(self::$_mLIT_PUMPKIN)){ self::init(); }
 		return clone self::$_mLIT_PUMPKIN;
+	}
+
+	public static function LODESTONE() : Opaque{
+		if(!isset(self::$_mLODESTONE)){ self::init(); }
+		return clone self::$_mLODESTONE;
 	}
 
 	public static function LOOM() : Loom{
@@ -4428,6 +4548,16 @@ final class VanillaBlocks{
 	public static function MOSSY_STONE_BRICK_WALL() : Wall{
 		if(!isset(self::$_mMOSSY_STONE_BRICK_WALL)){ self::init(); }
 		return clone self::$_mMOSSY_STONE_BRICK_WALL;
+	}
+
+	public static function MOSS_BLOCK() : Opaque{
+		if(!isset(self::$_mMOSS_BLOCK)){ self::init(); }
+		return clone self::$_mMOSS_BLOCK;
+	}
+
+	public static function MOSS_CARPET() : MossCarpet{
+		if(!isset(self::$_mMOSS_CARPET)){ self::init(); }
+		return clone self::$_mMOSS_CARPET;
 	}
 
 	public static function MUD() : Opaque{
@@ -4658,6 +4788,11 @@ final class VanillaBlocks{
 	public static function OXEYE_DAISY() : Flower{
 		if(!isset(self::$_mOXEYE_DAISY)){ self::init(); }
 		return clone self::$_mOXEYE_DAISY;
+	}
+
+	public static function OXIDIZED_COPPER_GOLEM_STATUE() : CopperGolemStatue{
+		if(!isset(self::$_mOXIDIZED_COPPER_GOLEM_STATUE)){ self::init(); }
+		return clone self::$_mOXIDIZED_COPPER_GOLEM_STATUE;
 	}
 
 	public static function PACKED_ICE() : PackedIce{
@@ -5295,6 +5430,11 @@ final class VanillaBlocks{
 		return clone self::$_mSEA_PICKLE;
 	}
 
+	public static function SHORT_DRY_GRASS() : DryGrass{
+		if(!isset(self::$_mSHORT_DRY_GRASS)){ self::init(); }
+		return clone self::$_mSHORT_DRY_GRASS;
+	}
+
 	public static function SHROOMLIGHT() : Opaque{
 		if(!isset(self::$_mSHROOMLIGHT)){ self::init(); }
 		return clone self::$_mSHROOMLIGHT;
@@ -5660,6 +5800,11 @@ final class VanillaBlocks{
 		return clone self::$_mSWEET_BERRY_BUSH;
 	}
 
+	public static function TALL_DRY_GRASS() : DryGrass{
+		if(!isset(self::$_mTALL_DRY_GRASS)){ self::init(); }
+		return clone self::$_mTALL_DRY_GRASS;
+	}
+
 	public static function TALL_GRASS() : TallGrass{
 		if(!isset(self::$_mTALL_GRASS)){ self::init(); }
 		return clone self::$_mTALL_GRASS;
@@ -5880,6 +6025,31 @@ final class VanillaBlocks{
 		return clone self::$_mWATER_CAULDRON;
 	}
 
+	public static function WAXED_COPPER_GOLEM_STATUE() : CopperGolemStatue{
+		if(!isset(self::$_mWAXED_COPPER_GOLEM_STATUE)){ self::init(); }
+		return clone self::$_mWAXED_COPPER_GOLEM_STATUE;
+	}
+
+	public static function WAXED_EXPOSED_COPPER_GOLEM_STATUE() : CopperGolemStatue{
+		if(!isset(self::$_mWAXED_EXPOSED_COPPER_GOLEM_STATUE)){ self::init(); }
+		return clone self::$_mWAXED_EXPOSED_COPPER_GOLEM_STATUE;
+	}
+
+	public static function WAXED_OXIDIZED_COPPER_GOLEM_STATUE() : CopperGolemStatue{
+		if(!isset(self::$_mWAXED_OXIDIZED_COPPER_GOLEM_STATUE)){ self::init(); }
+		return clone self::$_mWAXED_OXIDIZED_COPPER_GOLEM_STATUE;
+	}
+
+	public static function WAXED_WEATHERED_COPPER_GOLEM_STATUE() : CopperGolemStatue{
+		if(!isset(self::$_mWAXED_WEATHERED_COPPER_GOLEM_STATUE)){ self::init(); }
+		return clone self::$_mWAXED_WEATHERED_COPPER_GOLEM_STATUE;
+	}
+
+	public static function WEATHERED_COPPER_GOLEM_STATUE() : CopperGolemStatue{
+		if(!isset(self::$_mWEATHERED_COPPER_GOLEM_STATUE)){ self::init(); }
+		return clone self::$_mWEATHERED_COPPER_GOLEM_STATUE;
+	}
+
 	public static function WEEPING_VINES() : NetherVines{
 		if(!isset(self::$_mWEEPING_VINES)){ self::init(); }
 		return clone self::$_mWEEPING_VINES;
@@ -5908,6 +6078,11 @@ final class VanillaBlocks{
 	public static function WHITE_TULIP() : Flower{
 		if(!isset(self::$_mWHITE_TULIP)){ self::init(); }
 		return clone self::$_mWHITE_TULIP;
+	}
+
+	public static function WILDFLOWERS() : Wildflowers{
+		if(!isset(self::$_mWILDFLOWERS)){ self::init(); }
+		return clone self::$_mWILDFLOWERS;
 	}
 
 	public static function WITHER_ROSE() : WitherRose{

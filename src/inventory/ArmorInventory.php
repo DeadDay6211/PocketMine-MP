@@ -28,6 +28,7 @@ use pocketmine\entity\Living;
 use pocketmine\inventory\transaction\action\validator\CallbackSlotValidator;
 use pocketmine\inventory\transaction\TransactionValidationException;
 use pocketmine\item\Armor;
+use pocketmine\item\Elytra;
 use pocketmine\item\Item;
 use pocketmine\item\ItemBlock;
 
@@ -85,6 +86,10 @@ class ArmorInventory extends SimpleInventory{
 		if($item instanceof Armor){
 			if($item->getArmorSlot() !== $slot){
 				return new TransactionValidationException("Armor item is in wrong slot");
+			}
+		}elseif($item instanceof Elytra){
+			if($slot !== ArmorInventory::SLOT_CHEST){
+				return new TransactionValidationException("Elytra is in wrong slot");
 			}
 		}else{
 			if(!($slot === ArmorInventory::SLOT_HEAD && $item instanceof ItemBlock && (

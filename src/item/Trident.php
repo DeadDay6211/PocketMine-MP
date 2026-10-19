@@ -24,11 +24,14 @@ declare(strict_types=1);
 namespace pocketmine\item;
 
 use pocketmine\block\Block;
+use pocketmine\block\Water;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Location;
 use pocketmine\entity\projectile\Trident as TridentEntity;
 use pocketmine\event\entity\ProjectileLaunchEvent;
+use pocketmine\item\enchantment\VanillaEnchantments;
 use pocketmine\player\Player;
+use pocketmine\world\sound\TridentRiptideSound;
 use pocketmine\world\sound\TridentThrowSound;
 use function min;
 
@@ -39,10 +42,29 @@ class Trident extends Tool implements Releasable{
 		return 251;
 	}
 
+	/**
+	 * Riptide only works in water.
+	 * TODO: it should also work in rain
+	 */
+	private static function canUseRiptide(Player $player) : bool{
+		return $player->isUnderwater() || $player->getWorld()->getBlock($player->getPosition()) instanceof Water;
+	}
+
 	public function onReleaseUsing(Player $player, array &$returnedItems) : ItemUseResult{
 		$location = $player->getLocation();
 
 		$diff = $player->getItemUseDuration();
+		if(($riptideLevel = $this->getEnchantmentLevel(VanillaEnchantments::RIPTIDE())) > 0){
+			//the client launches the player itself, the trident isn't thrown
+			if($diff < 10 || !self::canUseRiptide($player)){
+				return ItemUseResult::FAIL;
+			}
+			if($player->hasFiniteResources()){
+				$this->applyDamage(self::DAMAGE_ON_THROW);
+			}
+			$player->broadcastSound(new TridentRiptideSound($riptideLevel));
+			return ItemUseResult::SUCCESS;
+		}
 		if($diff < 14){
 			return ItemUseResult::FAIL;
 		}
@@ -83,6 +105,9 @@ class Trident extends Tool implements Releasable{
 	}
 
 	public function canStartUsingItem(Player $player) : bool{
+		if($this->hasEnchantment(VanillaEnchantments::RIPTIDE()) && !self::canUseRiptide($player)){
+			return false;
+		}
 		return $this->damage < $this->getMaxDurability() - self::DAMAGE_ON_THROW;
 	}
 

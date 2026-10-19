@@ -47,6 +47,7 @@ use pocketmine\entity\NeverSavedWithChunkEntity;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\Skin;
+use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityExtinguishEvent;
@@ -86,6 +87,7 @@ use pocketmine\event\player\PlayerTransferEvent;
 use pocketmine\event\player\PlayerViewDistanceChangeEvent;
 use pocketmine\form\Form;
 use pocketmine\form\FormValidationException;
+use pocketmine\inventory\ArmorInventory;
 use pocketmine\inventory\CallbackInventoryListener;
 use pocketmine\inventory\CreativeInventory;
 use pocketmine\inventory\Inventory;
@@ -99,11 +101,13 @@ use pocketmine\inventory\transaction\TransactionCancelledException;
 use pocketmine\inventory\transaction\TransactionValidationException;
 use pocketmine\item\ConsumableItem;
 use pocketmine\item\Durable;
+use pocketmine\item\Elytra;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\enchantment\MeleeWeaponEnchantment;
 use pocketmine\item\Item;
 use pocketmine\item\ItemUseResult;
 use pocketmine\item\Releasable;
+use pocketmine\item\Shield;
 use pocketmine\lang\KnownTranslationFactory;
 use pocketmine\lang\Language;
 use pocketmine\lang\Translatable;
@@ -141,6 +145,7 @@ use pocketmine\world\sound\EntityAttackSound;
 use pocketmine\world\sound\FireExtinguishSound;
 use pocketmine\world\sound\ItemBreakSound;
 use pocketmine\world\sound\RespawnAnchorDepleteSound;
+use pocketmine\world\sound\ShieldBlockSound;
 use pocketmine\world\sound\Sound;
 use pocketmine\world\World;
 use pocketmine\YmlServerProperties;
@@ -149,6 +154,7 @@ use function abs;
 use function array_filter;
 use function array_shift;
 use function assert;
+use function ceil;
 use function count;
 use function explode;
 use function floor;
@@ -191,6 +197,9 @@ class Player extends Human implements CommandSender, ChunkListener, IPlayer, Nev
 	private const MAX_REACH_DISTANCE_ENTITY_INTERACTION = 8;
 
 	public const DEFAULT_FLIGHT_SPEED_MULTIPLIER = 0.05;
+
+	/** Ticks after raising a shield before it starts blocking */
+	private const SHIELD_BLOCKING_DELAY = 5;
 
 	public const TAG_FIRST_PLAYED = "firstPlayed"; //TAG_Long
 	public const TAG_LAST_PLAYED = "lastPlayed"; //TAG_Long
@@ -301,6 +310,10 @@ class Player extends Human implements CommandSender, ChunkListener, IPlayer, Nev
 	protected string $locale = "en_US";
 
 	protected int $startAction = -1;
+
+	/** Server tick from which a raised shield starts blocking, or null if the player isn't raising a shield */
+	private ?int $shieldBlockingStartTick = null;
+	private bool $lastSentShieldBlocking = false;
 
 	/**
 	 * @phpstan-var array<int|string, int>
@@ -1542,10 +1555,19 @@ class Player extends Human implements CommandSender, ChunkListener, IPlayer, Nev
 			$this->motion = Vector3::zero(); //TODO: HACK! (Fixes player knockback being messed up)
 			if($this->onGround){
 				$this->inAirTicks = 0;
+				if($this->gliding){
+					//newer clients don't stop gliding by themselves when landing
+					$this->toggleGlide(false);
+				}
 			}else{
 				$this->inAirTicks += $tickDiff;
 			}
 			Timings::$playerMove->stopTiming();
+
+			if(($blocking = $this->isBlockingWithShield()) !== $this->lastSentShieldBlocking){
+				$this->lastSentShieldBlocking = $blocking;
+				$this->networkPropertiesDirty = true;
+			}
 
 			Timings::$entityBaseTick->startTiming();
 			$this->entityBaseTick($tickDiff);
@@ -1987,6 +2009,7 @@ class Player extends Human implements CommandSender, ChunkListener, IPlayer, Nev
 		if(!$entity->isAlive()){
 			return false;
 		}
+		$this->delayShieldBlocking();
 		if($entity instanceof ItemEntity || $entity instanceof Arrow){
 			$this->logger->debug("Attempted to attack non-attackable entity " . get_class($entity));
 			return false;
@@ -2062,6 +2085,7 @@ class Player extends Human implements CommandSender, ChunkListener, IPlayer, Nev
 	 * Under normal circumstances, this will just play the no-damage attack sound and the arm-swing animation.
 	 */
 	public function missSwing() : void{
+		$this->delayShieldBlocking();
 		$ev = new PlayerMissSwingEvent($this);
 		$ev->call();
 		if(!$ev->isCancelled()){
@@ -2128,6 +2152,71 @@ class Player extends Human implements CommandSender, ChunkListener, IPlayer, Nev
 			return false;
 		}
 		$this->setSneaking($sneak);
+		$this->shieldBlockingStartTick = $sneak && $this->getHeldShield() !== null ? $this->server->getTick() + self::SHIELD_BLOCKING_DELAY : null;
+		return true;
+	}
+
+	/**
+	 * Returns the shield held in the main hand or off hand, if any.
+	 *
+	 * @return array{Inventory, Shield, int}|null inventory, shield, slot
+	 */
+	private function getHeldShield() : ?array{
+		$mainHand = $this->inventory->getItemInHand();
+		if($mainHand instanceof Shield){
+			return [$this->inventory, $mainHand, $this->inventory->getHeldItemIndex()];
+		}
+		$offHand = $this->offHandInventory->getItem(0);
+		if($offHand instanceof Shield){
+			return [$this->offHandInventory, $offHand, 0];
+		}
+		return null;
+	}
+
+	/**
+	 * Returns whether the player is sneaking with a raised shield, blocking damage from the front.
+	 */
+	public function isBlockingWithShield() : bool{
+		return $this->sneaking && $this->shieldBlockingStartTick !== null && $this->shieldBlockingStartTick <= $this->server->getTick() && $this->getHeldShield() !== null;
+	}
+
+	/**
+	 * Lowers the shield briefly, e.g. after swinging the arm.
+	 */
+	private function delayShieldBlocking() : void{
+		if($this->shieldBlockingStartTick !== null){
+			$this->shieldBlockingStartTick = $this->server->getTick() + self::SHIELD_BLOCKING_DELAY;
+		}
+	}
+
+	/**
+	 * Blocks the damage with a raised shield if it comes from the front. Returns whether the damage was blocked.
+	 */
+	private function tryBlockWithShield(EntityDamageEvent $source) : bool{
+		if(!$this->isBlockingWithShield() || !$source->canBeReducedByArmor() || !$source instanceof EntityDamageByEntityEvent){
+			return false;
+		}
+		$attacker = $source->getDamager();
+		$hitBy = $source instanceof EntityDamageByChildEntityEvent ? $source->getChild() : $attacker;
+		if($hitBy === null || $this->getDirectionVector()->dot($this->location->subtractVector($hitBy->getPosition())) > 0){
+			//attacks from behind aren't blocked
+			return false;
+		}
+		$heldShield = $this->getHeldShield();
+		if($heldShield === null){
+			return false;
+		}
+		[$shieldInventory, $shield, $shieldSlot] = $heldShield;
+
+		$damage = (int) ceil($source->getBaseDamage());
+		if($this->hasFiniteResources() && $damage >= 3){
+			$shield->applyDamage($damage);
+			$shieldInventory->setItem($shieldSlot, $shield);
+		}
+		if($attacker instanceof Living && !$source instanceof EntityDamageByChildEntityEvent){
+			$attacker->knockBack($attacker->getPosition()->x - $this->location->x, $attacker->getPosition()->z - $this->location->z, $source->getKnockBack());
+		}
+		$this->broadcastSound(new ShieldBlockSound());
 		return true;
 	}
 
@@ -2154,6 +2243,9 @@ class Player extends Human implements CommandSender, ChunkListener, IPlayer, Nev
 	public function toggleGlide(bool $glide) : bool{
 		if($glide === $this->gliding){
 			return true;
+		}
+		if($glide && !$this->armorInventory->getItem(ArmorInventory::SLOT_CHEST) instanceof Elytra){
+			return false;
 		}
 		$ev = new PlayerToggleGlideEvent($this, $glide);
 		$ev->call();
@@ -2669,6 +2761,8 @@ class Player extends Human implements CommandSender, ChunkListener, IPlayer, Nev
 			$source->cancel();
 		}elseif($this->allowFlight && $source->getCause() === EntityDamageEvent::CAUSE_FALL){
 			$source->cancel();
+		}elseif($this->tryBlockWithShield($source)){
+			$source->cancel();
 		}
 
 		parent::attack($source);
@@ -2678,6 +2772,7 @@ class Player extends Human implements CommandSender, ChunkListener, IPlayer, Nev
 		parent::syncNetworkData($properties);
 
 		$properties->setGenericFlag(EntityMetadataFlags::ACTION, $this->startAction > -1);
+		$properties->setGenericFlag(EntityMetadataFlags::BLOCKING, $this->lastSentShieldBlocking);
 		$properties->setGenericFlag(EntityMetadataFlags::HAS_COLLISION, $this->hasBlockCollision());
 
 		$properties->setPlayerFlag(PlayerMetadataFlags::SLEEP, $this->sleeping !== null);

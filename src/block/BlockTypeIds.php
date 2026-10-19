@@ -887,7 +887,32 @@ final class BlockTypeIds{
 	public const CINNABAR_BRICK_STAIRS = 10856;
 	public const CINNABAR_BRICK_WALL = 10857;
 
-	public const FIRST_UNUSED_BLOCK_ID = 10858;
+	public const BEE_NEST = 10858;
+	public const BEEHIVE = 10859;
+	public const BUSH = 10860;
+	public const COMPOSTER = 10861;
+	public const COPPER_GOLEM_STATUE = 10862;
+	public const EXPOSED_COPPER_GOLEM_STATUE = 10863;
+	public const WEATHERED_COPPER_GOLEM_STATUE = 10864;
+	public const OXIDIZED_COPPER_GOLEM_STATUE = 10865;
+	public const WAXED_COPPER_GOLEM_STATUE = 10866;
+	public const WAXED_EXPOSED_COPPER_GOLEM_STATUE = 10867;
+	public const WAXED_WEATHERED_COPPER_GOLEM_STATUE = 10868;
+	public const WAXED_OXIDIZED_COPPER_GOLEM_STATUE = 10869;
+	public const DECORATED_POT = 10870;
+	public const DRIPSTONE_BLOCK = 10871;
+	public const END_PORTAL = 10872;
+	public const FIREFLY_BUSH = 10873;
+	public const GRINDSTONE = 10874;
+	public const LEAF_LITTER = 10875;
+	public const LODESTONE = 10876;
+	public const MOSS_BLOCK = 10877;
+	public const MOSS_CARPET = 10878;
+	public const SHORT_DRY_GRASS = 10879;
+	public const TALL_DRY_GRASS = 10880;
+	public const WILDFLOWERS = 10881;
+
+	public const FIRST_UNUSED_BLOCK_ID = 10882;
 
 	private static int $nextDynamicId = self::FIRST_UNUSED_BLOCK_ID;
 
