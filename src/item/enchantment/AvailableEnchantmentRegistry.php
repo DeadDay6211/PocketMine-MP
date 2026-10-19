@@ -82,6 +82,10 @@ final class AvailableEnchantmentRegistry{
 		);
 		$this->register(Enchantments::VANISHING(), [], [Tags::ALL]);
 		$this->register(Enchantments::SWIFT_SNEAK(), [], [Tags::LEGGINGS]);
+		$this->register(Enchantments::RIPTIDE(), [Tags::TRIDENT], []);
+		$this->register(Enchantments::MULTISHOT(), [Tags::CROSSBOW], []);
+		$this->register(Enchantments::PIERCING(), [Tags::CROSSBOW], []);
+		$this->register(Enchantments::QUICK_CHARGE(), [Tags::CROSSBOW], []);
 	}
 
 	/**

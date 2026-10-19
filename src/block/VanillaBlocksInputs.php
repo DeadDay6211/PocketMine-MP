@@ -40,7 +40,9 @@ use pocketmine\block\tile\Cauldron as TileCauldron;
 use pocketmine\block\tile\Chest as TileChest;
 use pocketmine\block\tile\ChiseledBookshelf as TileChiseledBookshelf;
 use pocketmine\block\tile\Comparator as TileComparator;
+use pocketmine\block\tile\CopperGolemStatue as TileCopperGolemStatue;
 use pocketmine\block\tile\DaylightSensor as TileDaylightSensor;
+use pocketmine\block\tile\DecoratedPot as TileDecoratedPot;
 use pocketmine\block\tile\EnchantTable as TileEnchantingTable;
 use pocketmine\block\tile\EnderChest as TileEnderChest;
 use pocketmine\block\tile\FlowerPot as TileFlowerPot;
@@ -673,6 +675,7 @@ final class VanillaBlocksInputs extends RegistrySource{
 		self::registerOres();
 		self::registerWoodenBlocks();
 		self::registerCauldronBlocks();
+		self::registerBlocksR19Plus();
 	}
 
 	/**
@@ -1177,5 +1180,35 @@ final class VanillaBlocksInputs extends RegistrySource{
 		self::register("water_cauldron", fn(BID $id) => new WaterCauldron($id, "Water Cauldron", $cauldronBreakInfo), TileCauldron::class);
 		self::register("lava_cauldron", fn(BID $id) => new LavaCauldron($id, "Lava Cauldron", $cauldronBreakInfo), TileCauldron::class);
 		self::register("potion_cauldron", fn(BID $id) => new PotionCauldron($id, "Potion Cauldron", $cauldronBreakInfo), TileCauldron::class);
+	}
+	private function registerBlocksR19Plus() : void{
+		self::register("bee_nest", fn(BID $id) => new BeeNest($id, "Bee Nest", new Info(BreakInfo::axe(0.3))));
+		self::register("beehive", fn(BID $id) => new BeeHive($id, "Beehive", new Info(BreakInfo::axe(0.6))));
+		self::register("bush", fn(BID $id) => new Bush($id, "Bush", new Info(BreakInfo::instant(), [Tags::POTTABLE_PLANTS])));
+		self::register("cherry_sapling", fn(BID $id) => new CherrySapling($id, "Cherry Sapling", new Info(BreakInfo::instant(), [Tags::POTTABLE_PLANTS])));
+		self::register("composter", fn(BID $id) => new Composter($id, "Composter", new Info(BreakInfo::axe(0.6))));
+
+		$copperGolemStatueBreakInfo = new Info(BreakInfo::pickaxe(3.0, ToolTier::STONE, 30.0));
+		self::register("copper_golem_statue", fn(BID $id) => new CopperGolemStatue($id, "Copper Golem Statue", $copperGolemStatueBreakInfo), TileCopperGolemStatue::class);
+		self::register("exposed_copper_golem_statue", fn(BID $id) => new CopperGolemStatue($id, "Exposed Copper Golem Statue", $copperGolemStatueBreakInfo), TileCopperGolemStatue::class);
+		self::register("weathered_copper_golem_statue", fn(BID $id) => new CopperGolemStatue($id, "Weathered Copper Golem Statue", $copperGolemStatueBreakInfo), TileCopperGolemStatue::class);
+		self::register("oxidized_copper_golem_statue", fn(BID $id) => new CopperGolemStatue($id, "Oxidized Copper Golem Statue", $copperGolemStatueBreakInfo), TileCopperGolemStatue::class);
+		self::register("waxed_copper_golem_statue", fn(BID $id) => new CopperGolemStatue($id, "Waxed Copper Golem Statue", $copperGolemStatueBreakInfo), TileCopperGolemStatue::class);
+		self::register("waxed_exposed_copper_golem_statue", fn(BID $id) => new CopperGolemStatue($id, "Waxed Exposed Copper Golem Statue", $copperGolemStatueBreakInfo), TileCopperGolemStatue::class);
+		self::register("waxed_weathered_copper_golem_statue", fn(BID $id) => new CopperGolemStatue($id, "Waxed Weathered Copper Golem Statue", $copperGolemStatueBreakInfo), TileCopperGolemStatue::class);
+		self::register("waxed_oxidized_copper_golem_statue", fn(BID $id) => new CopperGolemStatue($id, "Waxed Oxidized Copper Golem Statue", $copperGolemStatueBreakInfo), TileCopperGolemStatue::class);
+
+		self::register("decorated_pot", fn(BID $id) => new DecoratedPot($id, "Decorated Pot", new Info(BreakInfo::instant())), TileDecoratedPot::class);
+		self::register("dripstone_block", fn(BID $id) => new Opaque($id, "Dripstone Block", new Info(BreakInfo::pickaxe(1.5, ToolTier::WOOD, 5.0))));
+		self::register("end_portal", fn(BID $id) => new EndPortal($id, "End Portal", new Info(BreakInfo::indestructible(18000000.0))));
+		self::register("firefly_bush", fn(BID $id) => new FireflyBush($id, "Firefly Bush", new Info(BreakInfo::instant(), [Tags::POTTABLE_PLANTS])));
+		self::register("grindstone", fn(BID $id) => new Grindstone($id, "Grindstone", new Info(BreakInfo::pickaxe(2.0, ToolTier::WOOD, 30.0))));
+		self::register("leaf_litter", fn(BID $id) => new LeafLitter($id, "Leaf Litter", new Info(BreakInfo::instant())));
+		self::register("lodestone", fn(BID $id) => new Opaque($id, "Lodestone", new Info(BreakInfo::pickaxe(3.5, ToolTier::WOOD, 17.5))));
+		self::register("moss_block", fn(BID $id) => new Opaque($id, "Moss Block", new Info(BreakInfo::hoe(0.1))));
+		self::register("moss_carpet", fn(BID $id) => new MossCarpet($id, "Moss Carpet", new Info(new BreakInfo(0.1))));
+		self::register("short_dry_grass", fn(BID $id) => new DryGrass($id, "Short Dry Grass", new Info(BreakInfo::instant(ToolType::SHEARS, 1))));
+		self::register("tall_dry_grass", fn(BID $id) => new DryGrass($id, "Tall Dry Grass", new Info(BreakInfo::instant(ToolType::SHEARS, 1))));
+		self::register("wildflowers", fn(BID $id) => new Wildflowers($id, "Wildflowers", new Info(BreakInfo::instant())));
 	}
 }

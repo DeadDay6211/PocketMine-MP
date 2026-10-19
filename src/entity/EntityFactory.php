@@ -41,9 +41,11 @@ use pocketmine\entity\object\Painting;
 use pocketmine\entity\object\PaintingMotive;
 use pocketmine\entity\object\PrimedTNT;
 use pocketmine\entity\projectile\Arrow;
+use pocketmine\entity\projectile\CrossbowArrow;
 use pocketmine\entity\projectile\Egg;
 use pocketmine\entity\projectile\EnderPearl;
 use pocketmine\entity\projectile\ExperienceBottle;
+use pocketmine\entity\projectile\Fireball;
 use pocketmine\entity\projectile\IceBomb;
 use pocketmine\entity\projectile\Snowball;
 use pocketmine\entity\projectile\SplashPotion;
@@ -92,9 +94,15 @@ final class EntityFactory{
 			return new AreaEffectCloud(Helper::parseLocation($nbt, $world), $nbt);
 		}, ['AreaEffectCloud', 'minecraft:area_effect_cloud']);
 
-		$this->register(Arrow::class, function(World $world, CompoundTag $nbt) : Arrow{
-			return new Arrow(Helper::parseLocation($nbt, $world), null, $nbt->getByte(Arrow::TAG_CRIT, 0) === 1, $nbt);
-		}, ['Arrow', 'minecraft:arrow']);
+		$createArrow = function(World $world, CompoundTag $nbt) : Arrow{
+			$location = Helper::parseLocation($nbt, $world);
+			if($nbt->getTag(CrossbowArrow::TAG_PIERCE_COUNT) !== null){
+				return new CrossbowArrow($location, null, $nbt->getInt(CrossbowArrow::TAG_PIERCE_COUNT), $nbt);
+			}
+			return new Arrow($location, null, $nbt->getByte(Arrow::TAG_CRIT, 0) === 1, $nbt);
+		};
+		$this->register(Arrow::class, $createArrow, ['Arrow', 'minecraft:arrow']);
+		$this->register(CrossbowArrow::class, $createArrow, ['Arrow', 'minecraft:arrow']);
 
 		$this->register(Egg::class, function(World $world, CompoundTag $nbt) : Egg{
 			return new Egg(Helper::parseLocation($nbt, $world), null, $nbt);
@@ -103,6 +111,10 @@ final class EntityFactory{
 		$this->register(EndCrystal::class, function(World $world, CompoundTag $nbt) : EndCrystal{
 			return new EndCrystal(Helper::parseLocation($nbt, $world), $nbt);
 		}, ['EnderCrystal', 'minecraft:ender_crystal']);
+
+		$this->register(Fireball::class, function(World $world, CompoundTag $nbt) : Fireball{
+			return new Fireball(Helper::parseLocation($nbt, $world), null, $nbt);
+		}, ['Fireball', 'minecraft:fireball']);
 
 		$this->register(EnderPearl::class, function(World $world, CompoundTag $nbt) : EnderPearl{
 			return new EnderPearl(Helper::parseLocation($nbt, $world), null, $nbt);

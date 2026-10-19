@@ -62,7 +62,9 @@ final class TileFactory{
 		$this->register(Chest::class, ["Chest", "minecraft:chest"]);
 		$this->register(ChiseledBookshelf::class, ["ChiseledBookshelf", "minecraft:chiseled_bookshelf"]);
 		$this->register(Comparator::class, ["Comparator", "minecraft:comparator"]);
+		$this->register(CopperGolemStatue::class, ["CopperGolemStatue", "minecraft:copper_golem_statue"]);
 		$this->register(DaylightSensor::class, ["DaylightDetector", "minecraft:daylight_detector"]);
+		$this->register(DecoratedPot::class, ["DecoratedPot", "minecraft:decorated_pot"]);
 		$this->register(EnchantTable::class, ["EnchantTable", "minecraft:enchanting_table"]);
 		$this->register(EnderChest::class, ["EnderChest", "minecraft:ender_chest"]);
 		$this->register(FlowerPot::class, ["FlowerPot", "minecraft:flower_pot"]);
