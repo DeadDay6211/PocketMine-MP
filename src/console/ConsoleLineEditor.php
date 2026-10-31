@@ -110,7 +110,7 @@ final class ConsoleLineEditor{
 		}
 		$visible = implode("", array_slice($this->chars, $this->offset, $end - $this->offset));
 		$column = mb_strwidth(self::PROMPT) + $this->columns($this->offset, $this->cursor);
-		$this->logger->setConsolePrompt("\r\x1b[2K" . self::PROMPT . $visible . "\r\x1b[" . $column . "C", $message);
+		$this->logger->setConsolePrompt("\x1b[?25l\r" . self::PROMPT . $visible . "\x1b[K\r\x1b[" . $column . "C\x1b[?25h", $message);
 	}
 
 	/**

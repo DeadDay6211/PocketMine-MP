@@ -173,16 +173,15 @@ class MainLogger extends AttachableThreadSafeLogger implements \BufferedLogger{
 	 */
 	public function setConsolePrompt(?string $prompt, ?string $message = null) : void{
 		$this->synchronized(function() use ($prompt, $message) : void{
-			if($this->consolePrompt !== null){
-				echo "[2K";
-			}
+			$out = "";
 			if($message !== null){
-				Terminal::writeLine($message);
+				$out .= "\r\x1b[2K" . Terminal::toANSI($message) . Terminal::$FORMAT_RESET . PHP_EOL;
+			}
+			if($prompt === null && $this->consolePrompt !== null){
+				$out .= "\r\x1b[2K";
 			}
 			$this->consolePrompt = $prompt;
-			if($prompt !== null){
-				echo $prompt;
-			}
+			echo $out . ($prompt ?? "");
 		});
 	}
 
@@ -216,11 +215,9 @@ class MainLogger extends AttachableThreadSafeLogger implements \BufferedLogger{
 
 		$this->synchronized(function() use ($message, $level, $time) : void{
 			if($this->consolePrompt !== null){
-				echo "[2K";
-			}
-			Terminal::writeLine($message);
-			if($this->consolePrompt !== null){
-				echo $this->consolePrompt;
+				echo "\r\x1b[2K" . Terminal::toANSI($message) . Terminal::$FORMAT_RESET . PHP_EOL . $this->consolePrompt;
+			}else{
+				Terminal::writeLine($message);
 			}
 			if($this->logWriterThread !== null){
 				$this->logWriterThread->write($time->format("Y-m-d") . " " . TextFormat::clean($message) . PHP_EOL);
