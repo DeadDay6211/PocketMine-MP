@@ -29,6 +29,10 @@ namespace pocketmine\item;
  */
 class Shield extends Durable{
 
+	public function getMaxStackSize() : int{
+		return 1;
+	}
+
 	public function getMaxDurability() : int{
 		return 337;
 	}

@@ -33,6 +33,10 @@ use pocketmine\world\sound\ArmorEquipElytraSound;
  */
 class Elytra extends Durable{
 
+	public function getMaxStackSize() : int{
+		return 1;
+	}
+
 	public function getMaxDurability() : int{
 		return 432;
 	}
