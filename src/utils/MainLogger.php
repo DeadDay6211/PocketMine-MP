@@ -40,6 +40,7 @@ class MainLogger extends AttachableThreadSafeLogger implements \BufferedLogger{
 	private string $mainThreadName;
 	private string $timezone;
 	private ?MainLoggerThread $logWriterThread = null;
+	private ?string $consolePrompt = null;
 
 	/**
 	 * @throws \RuntimeException
@@ -167,6 +168,24 @@ class MainLogger extends AttachableThreadSafeLogger implements \BufferedLogger{
 		$this->synchronized($c);
 	}
 
+	/**
+	 * Sets the line kept below the log output (null removes it). $message is written above it first.
+	 */
+	public function setConsolePrompt(?string $prompt, ?string $message = null) : void{
+		$this->synchronized(function() use ($prompt, $message) : void{
+			if($this->consolePrompt !== null){
+				echo "[2K";
+			}
+			if($message !== null){
+				Terminal::writeLine($message);
+			}
+			$this->consolePrompt = $prompt;
+			if($prompt !== null){
+				echo $prompt;
+			}
+		});
+	}
+
 	public function shutdownLogWriterThread() : void{
 		if($this->logWriterThread !== null){
 			if(NativeThread::getCurrentThreadId() === $this->logWriterThread->getCreatorId()){
@@ -196,7 +215,13 @@ class MainLogger extends AttachableThreadSafeLogger implements \BufferedLogger{
 		}
 
 		$this->synchronized(function() use ($message, $level, $time) : void{
+			if($this->consolePrompt !== null){
+				echo "[2K";
+			}
 			Terminal::writeLine($message);
+			if($this->consolePrompt !== null){
+				echo $this->consolePrompt;
+			}
 			if($this->logWriterThread !== null){
 				$this->logWriterThread->write($time->format("Y-m-d") . " " . TextFormat::clean($message) . PHP_EOL);
 			}

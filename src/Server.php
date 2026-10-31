@@ -169,6 +169,7 @@ use function sleep;
 use function spl_object_id;
 use function sprintf;
 use function str_repeat;
+use function str_contains;
 use function str_replace;
 use function stripos;
 use function strlen;
@@ -1196,7 +1197,7 @@ class Server{
 
 			//TODO: move console parts to a separate component
 			if($this->configGroup->getPropertyBool(Yml::CONSOLE_ENABLE_INPUT, true)){
-				$this->console = new ConsoleReaderChildProcessDaemon($this->logger);
+				$this->console = new ConsoleReaderChildProcessDaemon($this->logger, $this->completeConsoleLine(...));
 			}
 
 			$this->tickProcessor();
@@ -1204,6 +1205,27 @@ class Server{
 		}catch(\Throwable $e){
 			$this->exceptionHandler($e);
 		}
+	}
+
+	/**
+	 * @return string[]
+	 * @phpstan-return list<string>
+	 */
+	private function completeConsoleLine(string $line) : array{
+		$candidates = [];
+		if(!str_contains($line, " ")){
+			foreach($this->commandMap->getCommands() as $label => $command){
+				$label = (string) $label;
+				if(!str_contains($label, ":")){
+					$candidates[] = $label;
+				}
+			}
+		}else{
+			foreach($this->getOnlinePlayers() as $player){
+				$candidates[] = $player->getName();
+			}
+		}
+		return $candidates;
 	}
 
 	private function startupPrepareWorlds() : bool{
