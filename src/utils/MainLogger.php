@@ -175,10 +175,10 @@ class MainLogger extends AttachableThreadSafeLogger implements \BufferedLogger{
 		$this->synchronized(function() use ($prompt, $message) : void{
 			$out = "";
 			if($message !== null){
-				$out .= "\r\x1b[2K" . Terminal::toANSI($message) . Terminal::$FORMAT_RESET . PHP_EOL;
+				$out .= "\r\x1b[J" . Terminal::toANSI($message) . Terminal::$FORMAT_RESET . PHP_EOL;
 			}
 			if($prompt === null && $this->consolePrompt !== null){
-				$out .= "\r\x1b[2K";
+				$out .= "\r\x1b[J";
 			}
 			$this->consolePrompt = $prompt;
 			echo $out . ($prompt ?? "");
@@ -196,7 +196,7 @@ class MainLogger extends AttachableThreadSafeLogger implements \BufferedLogger{
 
 	private function writeLineAbovePrompt(string $line) : void{
 		if($this->consolePrompt !== null){
-			echo "\r\x1b[2K" . Terminal::toANSI($line) . Terminal::$FORMAT_RESET . PHP_EOL . $this->consolePrompt;
+			echo "\r\x1b[J" . Terminal::toANSI($line) . Terminal::$FORMAT_RESET . PHP_EOL . $this->consolePrompt;
 		}else{
 			Terminal::writeLine($line);
 		}

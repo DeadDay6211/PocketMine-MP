@@ -49,6 +49,8 @@ use const SORT_STRING;
 
 /**
  * Keeps the line being typed on the last row of the console, below the log output, like the proxy console does.
+ * Tab with several matches shows them on the row below the prompt; Tab/Shift+Tab or the arrow keys pick one and
+ * Enter puts it in the line.
  * Fed with key events from ConsoleKeyReader.ps1.
  */
 final class ConsoleLineEditor{
@@ -68,6 +70,7 @@ final class ConsoleLineEditor{
 	private const KEY_DELETE = 46;
 
 	private const MOD_ALT = 1;
+	private const MOD_SHIFT = 2;
 	private const MOD_CONTROL = 4;
 
 	/** @var string[] */
@@ -79,6 +82,10 @@ final class ConsoleLineEditor{
 	/** @var string[] */
 	private array $history = [];
 	private int $historyIndex = 0;
+	/** @var string[] */
+	private array $menu = [];
+	private int $menuIndex = -1;
+	private int $menuTokenLength = 0;
 
 	/**
 	 * @phpstan-param (\Closure(string) : list<string>)|null $completer
@@ -110,7 +117,8 @@ final class ConsoleLineEditor{
 		}
 		$visible = implode("", array_slice($this->chars, $this->offset, $end - $this->offset));
 		$column = mb_strwidth(self::PROMPT) + $this->columns($this->offset, $this->cursor);
-		$this->logger->setConsolePrompt("\x1b[?25l\r" . self::PROMPT . $visible . "\x1b[K\r\x1b[" . $column . "C\x1b[?25h", $message);
+		$menu = $this->menu !== [] ? "\r\n" . $this->renderMenu() . "\x1b[1A" : "";
+		$this->logger->setConsolePrompt("\x1b[?25l\r" . self::PROMPT . $visible . "\x1b[J" . $menu . "\r\x1b[" . $column . "C\x1b[?25h", $message);
 	}
 
 	/**
@@ -129,6 +137,39 @@ final class ConsoleLineEditor{
 		$key = (int) $parts[1];
 		$char = (int) $parts[2];
 		$modifiers = (int) $parts[3];
+
+		if($this->menu !== []){
+			switch($key){
+				case self::KEY_TAB:
+					$this->moveMenu(($modifiers & self::MOD_SHIFT) !== 0 ? -1 : 1);
+					return null;
+				case self::KEY_RIGHT:
+				case self::KEY_DOWN:
+					$this->moveMenu(1);
+					return null;
+				case self::KEY_LEFT:
+				case self::KEY_UP:
+					$this->moveMenu(-1);
+					return null;
+				case self::KEY_ENTER:
+					if($this->menuIndex >= 0){
+						$choice = $this->menu[$this->menuIndex];
+						$this->menu = [];
+						$this->replaceToken($this->menuTokenLength, $choice . " ");
+						$this->redraw();
+						return null;
+					}
+					$this->menu = [];
+					break;
+				case self::KEY_ESCAPE:
+					$this->menu = [];
+					$this->redraw();
+					return null;
+				default:
+					$this->menu = [];
+					break;
+			}
+		}
 
 		switch($key){
 			case self::KEY_ENTER:
@@ -174,6 +215,7 @@ final class ConsoleLineEditor{
 				break;
 			default:
 				if($char < 32 || $char === 127 || ($modifiers & (self::MOD_CONTROL | self::MOD_ALT)) === self::MOD_CONTROL){
+					$this->redraw();
 					return null;
 				}
 				if($char >= 0xd800 && $char <= 0xdbff){
@@ -231,6 +273,7 @@ final class ConsoleLineEditor{
 		}
 		$matches = array_values(array_unique($matches));
 		if(count($matches) === 0){
+			$this->redraw();
 			return;
 		}
 		if(count($matches) === 1){
@@ -251,10 +294,42 @@ final class ConsoleLineEditor{
 		}
 		if(mb_strlen($common) > mb_strlen($token)){
 			$this->replaceToken(mb_strlen($token), $common);
-			$this->redraw();
-		}else{
-			$this->redraw(implode("  ", $matches));
+			$token = $common;
 		}
+		$this->menu = $matches;
+		$this->menuIndex = -1;
+		$this->menuTokenLength = mb_strlen($token);
+		$this->redraw();
+	}
+
+	private function moveMenu(int $step) : void{
+		$count = count($this->menu);
+		$this->menuIndex = $this->menuIndex < 0 ? ($step > 0 ? 0 : $count - 1) : ($this->menuIndex + $step + $count) % $count;
+		$this->redraw();
+	}
+
+	private function renderMenu() : string{
+		$avail = max(1, $this->width - 1);
+		$cells = [];
+		foreach($this->menu as $candidate){
+			$cells[] = " " . $candidate . " ";
+		}
+		$selected = max(0, $this->menuIndex);
+		$start = 0;
+		while($start < $selected && mb_strwidth(implode("", array_slice($cells, $start, $selected - $start + 1))) > $avail){
+			$start++;
+		}
+		$out = "";
+		$used = 0;
+		for($i = $start; $i < count($cells); $i++){
+			$width = mb_strwidth($cells[$i]);
+			if($used + $width > $avail){
+				break;
+			}
+			$used += $width;
+			$out .= $i === $this->menuIndex ? "\x1b[7m" . $cells[$i] . "\x1b[27m" : "\x1b[90m" . $cells[$i] . "\x1b[39m";
+		}
+		return $out;
 	}
 
 	private function replaceToken(int $length, string $replacement) : void{
