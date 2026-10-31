@@ -30,6 +30,7 @@ use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\PermissibleBase;
 use pocketmine\permission\PermissibleDelegateTrait;
 use pocketmine\Server;
+use pocketmine\utils\MainLogger;
 use pocketmine\utils\Terminal;
 use pocketmine\utils\TextFormat;
 use function explode;
@@ -62,8 +63,14 @@ class ConsoleCommandSender implements CommandSender{
 			$message = $this->getLanguage()->translate($message);
 		}
 
+		$logger = $this->server->getLogger();
 		foreach(explode("\n", trim($message), limit: PHP_INT_MAX) as $line){
-			Terminal::writeLine(TextFormat::GREEN . "Command output | " . TextFormat::addBase(TextFormat::WHITE, $line));
+			$line = TextFormat::GREEN . "Command output | " . TextFormat::addBase(TextFormat::WHITE, $line);
+			if($logger instanceof MainLogger){
+				$logger->writeConsoleLine($line);
+			}else{
+				Terminal::writeLine($line);
+			}
 		}
 	}
 
