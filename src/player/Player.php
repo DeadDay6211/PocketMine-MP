@@ -2247,6 +2247,9 @@ class Player extends Human implements CommandSender, ChunkListener, IPlayer, Nev
 		if($glide && !$this->armorInventory->getItem(ArmorInventory::SLOT_CHEST) instanceof Elytra){
 			return false;
 		}
+		if($glide && !$this->server->getConfigGroup()->getPropertyBool(YmlServerProperties::PLAYER_ELYTRA_FLIGHT, false)){
+			return false;
+		}
 		$ev = new PlayerToggleGlideEvent($this, $glide);
 		$ev->call();
 		if($ev->isCancelled()){

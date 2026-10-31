@@ -45,6 +45,7 @@ use pocketmine\event\player\PlayerDataSaveEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\server\CommandEvent;
 use pocketmine\event\server\QueryRegenerateEvent;
+use pocketmine\item\StringToItemParser;
 use pocketmine\lang\KnownTranslationFactory;
 use pocketmine\lang\Language;
 use pocketmine\lang\LanguageNotFoundException;
@@ -461,6 +462,27 @@ class Server{
 
 	public function getCraftingManager() : CraftingManager{
 		return $this->craftingManager;
+	}
+
+	private function removeDisabledRecipes() : void{
+		$names = $this->configGroup->getProperty(Yml::PLAYER_DISABLED_RECIPES, ["shield"]);
+		if(!is_array($names)){
+			$this->logger->warning(Yml::PLAYER_DISABLED_RECIPES . " in pocketmine.yml must be a list of item names, ignoring it");
+			return;
+		}
+		$items = [];
+		foreach($names as $name){
+			$item = is_string($name) ? StringToItemParser::getInstance()->parse($name) : null;
+			if($item === null){
+				$this->logger->warning("Unknown item " . (is_string($name) ? "\"$name\"" : gettype($name)) . " in " . Yml::PLAYER_DISABLED_RECIPES . ", ignoring it");
+				continue;
+			}
+			$items[] = $item;
+		}
+		if(count($items) > 0){
+			$removed = $this->craftingManager->removeRecipesByResult($items);
+			$this->logger->debug("Removed $removed disabled crafting recipes");
+		}
 	}
 
 	public function getResourcePackManager() : ResourcePackManager{
@@ -1066,6 +1088,7 @@ class Server{
 			$this->commandMap = new SimpleCommandMap($this);
 
 			$this->craftingManager = CraftingManagerFromDataHelper::make(BedrockDataFiles::RECIPES);
+			$this->removeDisabledRecipes();
 
 			$this->resourceManager = new ResourcePackManager(Path::join($this->dataPath, "resource_packs"), $this->logger);
 

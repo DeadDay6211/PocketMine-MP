@@ -25,6 +25,7 @@ namespace pocketmine\build\generate_pocketmine_yml_property_consts;
 
 use pocketmine\utils\Filesystem;
 use pocketmine\utils\Utils;
+use function array_is_list;
 use function dirname;
 use function fclose;
 use function fopen;
@@ -63,7 +64,7 @@ function collectProperties(string $prefix, array $properties, array &$constants)
 		$constName = str_replace([".", "-"], "_", strtoupper($fullPropertyName));
 		$constants[$constName] = $fullPropertyName;
 
-		if(is_array($property)){
+		if(is_array($property) && !array_is_list($property)){
 			collectProperties($fullPropertyName, $property, $constants);
 		}
 	}
