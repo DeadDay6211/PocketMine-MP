@@ -49,8 +49,8 @@ use const SORT_STRING;
 
 /**
  * Keeps the line being typed on the last row of the console, below the log output, like the proxy console does.
- * Tab with several matches shows them on the row below the prompt; Tab/Shift+Tab or the arrow keys pick one and
- * Enter puts it in the line.
+ * Tab with several matches shows them on the row below the prompt; Tab/Shift+Tab or the arrow keys put the next
+ * one in the line, Space or Enter keeps it and Escape goes back to what was typed.
  * Fed with key events from ConsoleKeyReader.ps1.
  */
 final class ConsoleLineEditor{
@@ -85,6 +85,7 @@ final class ConsoleLineEditor{
 	/** @var string[] */
 	private array $menu = [];
 	private int $menuIndex = -1;
+	private string $menuToken = "";
 	private int $menuTokenLength = 0;
 
 	/**
@@ -153,15 +154,14 @@ final class ConsoleLineEditor{
 					return null;
 				case self::KEY_ENTER:
 					if($this->menuIndex >= 0){
-						$choice = $this->menu[$this->menuIndex];
 						$this->menu = [];
-						$this->replaceToken($this->menuTokenLength, $choice . " ");
 						$this->redraw();
 						return null;
 					}
 					$this->menu = [];
 					break;
 				case self::KEY_ESCAPE:
+					$this->replaceToken($this->menuTokenLength, $this->menuToken);
 					$this->menu = [];
 					$this->redraw();
 					return null;
@@ -298,6 +298,7 @@ final class ConsoleLineEditor{
 		}
 		$this->menu = $matches;
 		$this->menuIndex = -1;
+		$this->menuToken = $token;
 		$this->menuTokenLength = mb_strlen($token);
 		$this->redraw();
 	}
@@ -305,6 +306,9 @@ final class ConsoleLineEditor{
 	private function moveMenu(int $step) : void{
 		$count = count($this->menu);
 		$this->menuIndex = $this->menuIndex < 0 ? ($step > 0 ? 0 : $count - 1) : ($this->menuIndex + $step + $count) % $count;
+		$choice = $this->menu[$this->menuIndex];
+		$this->replaceToken($this->menuTokenLength, $choice);
+		$this->menuTokenLength = mb_strlen($choice);
 		$this->redraw();
 	}
 
