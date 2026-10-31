@@ -173,17 +173,33 @@ class MainLogger extends AttachableThreadSafeLogger implements \BufferedLogger{
 	 */
 	public function setConsolePrompt(?string $prompt, ?string $message = null) : void{
 		$this->synchronized(function() use ($prompt, $message) : void{
-			if($this->consolePrompt !== null){
-				echo "[2K";
-			}
+			$out = "";
 			if($message !== null){
-				Terminal::writeLine($message);
+				$out .= "\r\x1b[2K" . Terminal::toANSI($message) . Terminal::$FORMAT_RESET . PHP_EOL;
+			}
+			if($prompt === null && $this->consolePrompt !== null){
+				$out .= "\r\x1b[2K";
 			}
 			$this->consolePrompt = $prompt;
-			if($prompt !== null){
-				echo $prompt;
-			}
+			echo $out . ($prompt ?? "");
 		});
+	}
+
+	/**
+	 * Writes a line to the console without logging it, keeping the console prompt below it.
+	 */
+	public function writeConsoleLine(string $line) : void{
+		$this->synchronized(function() use ($line) : void{
+			$this->writeLineAbovePrompt($line);
+		});
+	}
+
+	private function writeLineAbovePrompt(string $line) : void{
+		if($this->consolePrompt !== null){
+			echo "\r\x1b[2K" . Terminal::toANSI($line) . Terminal::$FORMAT_RESET . PHP_EOL . $this->consolePrompt;
+		}else{
+			Terminal::writeLine($line);
+		}
 	}
 
 	public function shutdownLogWriterThread() : void{
@@ -215,13 +231,7 @@ class MainLogger extends AttachableThreadSafeLogger implements \BufferedLogger{
 		}
 
 		$this->synchronized(function() use ($message, $level, $time) : void{
-			if($this->consolePrompt !== null){
-				echo "[2K";
-			}
-			Terminal::writeLine($message);
-			if($this->consolePrompt !== null){
-				echo $this->consolePrompt;
-			}
+			$this->writeLineAbovePrompt($message);
 			if($this->logWriterThread !== null){
 				$this->logWriterThread->write($time->format("Y-m-d") . " " . TextFormat::clean($message) . PHP_EOL);
 			}
