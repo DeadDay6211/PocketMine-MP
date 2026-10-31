@@ -30,7 +30,9 @@ use pocketmine\nbt\LittleEndianNbtSerializer;
 use pocketmine\nbt\TreeRoot;
 use pocketmine\utils\DestructorCallbackTrait;
 use pocketmine\utils\ObjectSet;
+use function array_filter;
 use function array_shift;
+use function array_values;
 use function count;
 use function implode;
 use function ksort;
@@ -222,6 +224,55 @@ class CraftingManager{
 		foreach($this->recipeRegisteredCallbacks as $callback){
 			$callback();
 		}
+	}
+
+	/**
+	 * @param Item[] $results
+	 */
+	public function removeRecipesByResult(array $results) : int{
+		$typeIds = [];
+		foreach($results as $item){
+			$typeIds[$item->getTypeId()] = true;
+		}
+		$makes = static function(CraftingRecipe $recipe) use ($typeIds) : bool{
+			foreach($recipe->getResults() as $result){
+				if(isset($typeIds[$result->getTypeId()])){
+					return true;
+				}
+			}
+			return false;
+		};
+
+		$removed = 0;
+		foreach($this->craftingRecipeIndex as $index => $recipe){
+			if($makes($recipe)){
+				unset($this->craftingRecipeIndex[$index]);
+				$removed++;
+			}
+		}
+		foreach($this->shapedRecipes as $hash => $recipes){
+			$kept = array_values(array_filter($recipes, static fn(ShapedRecipe $r) : bool => !$makes($r)));
+			if($kept === []){
+				unset($this->shapedRecipes[$hash]);
+			}else{
+				$this->shapedRecipes[$hash] = $kept;
+			}
+		}
+		foreach($this->shapelessRecipes as $hash => $recipes){
+			$kept = array_values(array_filter($recipes, static fn(ShapelessRecipe $r) : bool => !$makes($r)));
+			if($kept === []){
+				unset($this->shapelessRecipes[$hash]);
+			}else{
+				$this->shapelessRecipes[$hash] = $kept;
+			}
+		}
+
+		if($removed > 0){
+			foreach($this->recipeRegisteredCallbacks as $callback){
+				$callback();
+			}
+		}
+		return $removed;
 	}
 
 	/**

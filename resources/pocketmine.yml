@@ -181,6 +181,12 @@ player:
   #If true, checks that joining players' Xbox user ID (XUID) match what was previously recorded.
   #This also prevents non-XBL players using XBL players' usernames to steal their data on servers with xbox-auth=off.
   verify-xuid: true
+  #Items whose crafting recipes are removed when the server starts (item names as used by /give).
+  #If this key is missing, the shield recipe is removed.
+  disabled-recipes:
+    - shield
+  #If false, players can wear an elytra but can't glide with it.
+  elytra-flight: false
 
 level-settings:
   #The default format that worlds will use when created
